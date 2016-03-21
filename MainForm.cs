@@ -24,5 +24,12 @@ namespace GMAPStaion
             PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
             toolStripStatusLabelInfo.Text = string.Format("经度:{0:0.000000} 纬度:{1:0.000000}", pnew.Lng, pnew.Lat);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

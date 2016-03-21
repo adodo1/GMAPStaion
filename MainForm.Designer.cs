@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.谷歌卫星ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.谷歌地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.百度地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oSM地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aGS地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.必应地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.下载地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.影像拼接ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.坐标ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.定位坐标ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.航线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.航线设计ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.航程计算ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.日志回放ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.坐标转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.显示网格ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripStatusLabelInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemOpenSHP = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemGoogleSatelliteMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemGoogleMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemBaiduMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemBingMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemOpenStreetMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemArcgisMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemUnion = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAirline = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAirlinePlan = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAirlineSum = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemReplay = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCoordinate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemLocation = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCoordinateConvert = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemShowGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAboutMe = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMap = new GMAPStaion.Map();
-            this.文件FToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开SHPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -69,160 +69,189 @@
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "状态栏";
             // 
-            // menuStrip
-            // 
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件FToolStripMenuItem,
-            this.地图ToolStripMenuItem,
-            this.工具ToolStripMenuItem,
-            this.航线ToolStripMenuItem,
-            this.坐标ToolStripMenuItem,
-            this.设置ToolStripMenuItem,
-            this.关于AToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(680, 24);
-            this.menuStrip.TabIndex = 1;
-            this.menuStrip.Text = "menuStrip1";
-            // 
-            // 地图ToolStripMenuItem
-            // 
-            this.地图ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.谷歌卫星ToolStripMenuItem,
-            this.谷歌地图ToolStripMenuItem,
-            this.百度地图ToolStripMenuItem,
-            this.必应地图ToolStripMenuItem,
-            this.oSM地图ToolStripMenuItem,
-            this.aGS地图ToolStripMenuItem});
-            this.地图ToolStripMenuItem.Name = "地图ToolStripMenuItem";
-            this.地图ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.地图ToolStripMenuItem.Text = "地图(&M)";
-            // 
-            // 谷歌卫星ToolStripMenuItem
-            // 
-            this.谷歌卫星ToolStripMenuItem.Name = "谷歌卫星ToolStripMenuItem";
-            this.谷歌卫星ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.谷歌卫星ToolStripMenuItem.Text = "谷歌卫星";
-            // 
-            // 谷歌地图ToolStripMenuItem
-            // 
-            this.谷歌地图ToolStripMenuItem.Name = "谷歌地图ToolStripMenuItem";
-            this.谷歌地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.谷歌地图ToolStripMenuItem.Text = "谷歌地图";
-            // 
-            // 百度地图ToolStripMenuItem
-            // 
-            this.百度地图ToolStripMenuItem.Name = "百度地图ToolStripMenuItem";
-            this.百度地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.百度地图ToolStripMenuItem.Text = "百度地图";
-            // 
-            // oSM地图ToolStripMenuItem
-            // 
-            this.oSM地图ToolStripMenuItem.Name = "oSM地图ToolStripMenuItem";
-            this.oSM地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.oSM地图ToolStripMenuItem.Text = "OSM地图";
-            // 
-            // aGS地图ToolStripMenuItem
-            // 
-            this.aGS地图ToolStripMenuItem.Name = "aGS地图ToolStripMenuItem";
-            this.aGS地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aGS地图ToolStripMenuItem.Text = "AGS地图";
-            // 
-            // 必应地图ToolStripMenuItem
-            // 
-            this.必应地图ToolStripMenuItem.Name = "必应地图ToolStripMenuItem";
-            this.必应地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.必应地图ToolStripMenuItem.Text = "必应地图";
-            // 
-            // 工具ToolStripMenuItem
-            // 
-            this.工具ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.下载地图ToolStripMenuItem,
-            this.影像拼接ToolStripMenuItem});
-            this.工具ToolStripMenuItem.Name = "工具ToolStripMenuItem";
-            this.工具ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.工具ToolStripMenuItem.Text = "工具(&T)";
-            // 
-            // 下载地图ToolStripMenuItem
-            // 
-            this.下载地图ToolStripMenuItem.Name = "下载地图ToolStripMenuItem";
-            this.下载地图ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.下载地图ToolStripMenuItem.Text = "下载地图";
-            // 
-            // 影像拼接ToolStripMenuItem
-            // 
-            this.影像拼接ToolStripMenuItem.Name = "影像拼接ToolStripMenuItem";
-            this.影像拼接ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.影像拼接ToolStripMenuItem.Text = "影像拼接";
-            // 
-            // 坐标ToolStripMenuItem
-            // 
-            this.坐标ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.定位坐标ToolStripMenuItem,
-            this.坐标转换ToolStripMenuItem});
-            this.坐标ToolStripMenuItem.Name = "坐标ToolStripMenuItem";
-            this.坐标ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.坐标ToolStripMenuItem.Text = "坐标(&L)";
-            // 
-            // 定位坐标ToolStripMenuItem
-            // 
-            this.定位坐标ToolStripMenuItem.Name = "定位坐标ToolStripMenuItem";
-            this.定位坐标ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.定位坐标ToolStripMenuItem.Text = "定位坐标";
-            // 
-            // 航线ToolStripMenuItem
-            // 
-            this.航线ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.航线设计ToolStripMenuItem1,
-            this.航程计算ToolStripMenuItem1,
-            this.日志回放ToolStripMenuItem1});
-            this.航线ToolStripMenuItem.Name = "航线ToolStripMenuItem";
-            this.航线ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.航线ToolStripMenuItem.Text = "航线(&P)";
-            // 
-            // 航线设计ToolStripMenuItem1
-            // 
-            this.航线设计ToolStripMenuItem1.Name = "航线设计ToolStripMenuItem1";
-            this.航线设计ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.航线设计ToolStripMenuItem1.Text = "航线设计";
-            // 
-            // 航程计算ToolStripMenuItem1
-            // 
-            this.航程计算ToolStripMenuItem1.Name = "航程计算ToolStripMenuItem1";
-            this.航程计算ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.航程计算ToolStripMenuItem1.Text = "航程计算";
-            // 
-            // 日志回放ToolStripMenuItem1
-            // 
-            this.日志回放ToolStripMenuItem1.Name = "日志回放ToolStripMenuItem1";
-            this.日志回放ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.日志回放ToolStripMenuItem1.Text = "日志回放";
-            // 
-            // 坐标转换ToolStripMenuItem
-            // 
-            this.坐标转换ToolStripMenuItem.Name = "坐标转换ToolStripMenuItem";
-            this.坐标转换ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.坐标转换ToolStripMenuItem.Text = "坐标转换";
-            // 
-            // 设置ToolStripMenuItem
-            // 
-            this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.显示网格ToolStripMenuItem});
-            this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.设置ToolStripMenuItem.Text = "设置(&S)";
-            // 
-            // 显示网格ToolStripMenuItem
-            // 
-            this.显示网格ToolStripMenuItem.Name = "显示网格ToolStripMenuItem";
-            this.显示网格ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.显示网格ToolStripMenuItem.Text = "显示网格";
-            // 
             // toolStripStatusLabelInfo
             // 
             this.toolStripStatusLabelInfo.Name = "toolStripStatusLabelInfo";
             this.toolStripStatusLabelInfo.Size = new System.Drawing.Size(29, 17);
             this.toolStripStatusLabelInfo.Text = "坐标";
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemFile,
+            this.toolStripMenuItemMap,
+            this.工具ToolStripMenuItem,
+            this.toolStripMenuItemAirline,
+            this.toolStripMenuItemCoordinate,
+            this.toolStripMenuItemSetting,
+            this.toolStripMenuItemAbout});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(680, 24);
+            this.menuStrip.TabIndex = 1;
+            this.menuStrip.Text = "menuStrip1";
+            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
+            // 
+            // toolStripMenuItemFile
+            // 
+            this.toolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemOpenSHP});
+            this.toolStripMenuItemFile.Name = "toolStripMenuItemFile";
+            this.toolStripMenuItemFile.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemFile.Text = "文件(&F)";
+            // 
+            // toolStripMenuItemOpenSHP
+            // 
+            this.toolStripMenuItemOpenSHP.Name = "toolStripMenuItemOpenSHP";
+            this.toolStripMenuItemOpenSHP.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItemOpenSHP.Text = "打开SHP";
+            // 
+            // toolStripMenuItemMap
+            // 
+            this.toolStripMenuItemMap.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemGoogleSatelliteMap,
+            this.toolStripMenuItemGoogleMap,
+            this.toolStripMenuItemBaiduMap,
+            this.toolStripMenuItemBingMap,
+            this.toolStripMenuItemOpenStreetMap,
+            this.toolStripMenuItemArcgisMap});
+            this.toolStripMenuItemMap.Name = "toolStripMenuItemMap";
+            this.toolStripMenuItemMap.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemMap.Text = "地图(&M)";
+            // 
+            // toolStripMenuItemGoogleSatelliteMap
+            // 
+            this.toolStripMenuItemGoogleSatelliteMap.Name = "toolStripMenuItemGoogleSatelliteMap";
+            this.toolStripMenuItemGoogleSatelliteMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemGoogleSatelliteMap.Text = "谷歌卫星";
+            // 
+            // toolStripMenuItemGoogleMap
+            // 
+            this.toolStripMenuItemGoogleMap.Name = "toolStripMenuItemGoogleMap";
+            this.toolStripMenuItemGoogleMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemGoogleMap.Text = "谷歌地图";
+            // 
+            // toolStripMenuItemBaiduMap
+            // 
+            this.toolStripMenuItemBaiduMap.Name = "toolStripMenuItemBaiduMap";
+            this.toolStripMenuItemBaiduMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemBaiduMap.Text = "百度地图";
+            // 
+            // toolStripMenuItemBingMap
+            // 
+            this.toolStripMenuItemBingMap.Name = "toolStripMenuItemBingMap";
+            this.toolStripMenuItemBingMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemBingMap.Text = "必应地图";
+            // 
+            // toolStripMenuItemOpenStreetMap
+            // 
+            this.toolStripMenuItemOpenStreetMap.Name = "toolStripMenuItemOpenStreetMap";
+            this.toolStripMenuItemOpenStreetMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemOpenStreetMap.Text = "OSM地图";
+            // 
+            // toolStripMenuItemArcgisMap
+            // 
+            this.toolStripMenuItemArcgisMap.Name = "toolStripMenuItemArcgisMap";
+            this.toolStripMenuItemArcgisMap.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemArcgisMap.Text = "AGS地图";
+            // 
+            // 工具ToolStripMenuItem
+            // 
+            this.工具ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDownload,
+            this.toolStripMenuItemUnion});
+            this.工具ToolStripMenuItem.Name = "工具ToolStripMenuItem";
+            this.工具ToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.工具ToolStripMenuItem.Text = "工具(&T)";
+            // 
+            // toolStripMenuItemDownload
+            // 
+            this.toolStripMenuItemDownload.Name = "toolStripMenuItemDownload";
+            this.toolStripMenuItemDownload.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemDownload.Text = "下载地图";
+            // 
+            // toolStripMenuItemUnion
+            // 
+            this.toolStripMenuItemUnion.Name = "toolStripMenuItemUnion";
+            this.toolStripMenuItemUnion.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemUnion.Text = "影像拼接";
+            // 
+            // toolStripMenuItemAirline
+            // 
+            this.toolStripMenuItemAirline.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemAirlinePlan,
+            this.toolStripMenuItemAirlineSum,
+            this.toolStripMenuItemReplay});
+            this.toolStripMenuItemAirline.Name = "toolStripMenuItemAirline";
+            this.toolStripMenuItemAirline.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemAirline.Text = "航线(&P)";
+            // 
+            // toolStripMenuItemAirlinePlan
+            // 
+            this.toolStripMenuItemAirlinePlan.Name = "toolStripMenuItemAirlinePlan";
+            this.toolStripMenuItemAirlinePlan.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemAirlinePlan.Text = "航线设计";
+            // 
+            // toolStripMenuItemAirlineSum
+            // 
+            this.toolStripMenuItemAirlineSum.Name = "toolStripMenuItemAirlineSum";
+            this.toolStripMenuItemAirlineSum.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemAirlineSum.Text = "航程计算";
+            // 
+            // toolStripMenuItemReplay
+            // 
+            this.toolStripMenuItemReplay.Name = "toolStripMenuItemReplay";
+            this.toolStripMenuItemReplay.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemReplay.Text = "日志回放";
+            // 
+            // toolStripMenuItemCoordinate
+            // 
+            this.toolStripMenuItemCoordinate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemLocation,
+            this.toolStripMenuItemCoordinateConvert});
+            this.toolStripMenuItemCoordinate.Name = "toolStripMenuItemCoordinate";
+            this.toolStripMenuItemCoordinate.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemCoordinate.Text = "坐标(&L)";
+            // 
+            // toolStripMenuItemLocation
+            // 
+            this.toolStripMenuItemLocation.Name = "toolStripMenuItemLocation";
+            this.toolStripMenuItemLocation.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemLocation.Text = "定位坐标";
+            // 
+            // toolStripMenuItemCoordinateConvert
+            // 
+            this.toolStripMenuItemCoordinateConvert.Name = "toolStripMenuItemCoordinateConvert";
+            this.toolStripMenuItemCoordinateConvert.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemCoordinateConvert.Text = "坐标转换";
+            // 
+            // toolStripMenuItemSetting
+            // 
+            this.toolStripMenuItemSetting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemShowGrid});
+            this.toolStripMenuItemSetting.Name = "toolStripMenuItemSetting";
+            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemSetting.Text = "设置(&S)";
+            // 
+            // toolStripMenuItemShowGrid
+            // 
+            this.toolStripMenuItemShowGrid.Name = "toolStripMenuItemShowGrid";
+            this.toolStripMenuItemShowGrid.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemShowGrid.Text = "显示网格";
+            // 
+            // toolStripMenuItemAbout
+            // 
+            this.toolStripMenuItemAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemAboutMe});
+            this.toolStripMenuItemAbout.Name = "toolStripMenuItemAbout";
+            this.toolStripMenuItemAbout.Size = new System.Drawing.Size(59, 20);
+            this.toolStripMenuItemAbout.Text = "关于(&A)";
+            // 
+            // toolStripMenuItemAboutMe
+            // 
+            this.toolStripMenuItemAboutMe.Name = "toolStripMenuItemAboutMe";
+            this.toolStripMenuItemAboutMe.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItemAboutMe.Text = "关于...";
             // 
             // MainMap
             // 
@@ -251,34 +280,6 @@
             this.MainMap.Zoom = 0D;
             this.MainMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainMap_MouseMove);
             // 
-            // 文件FToolStripMenuItem
-            // 
-            this.文件FToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开SHPToolStripMenuItem});
-            this.文件FToolStripMenuItem.Name = "文件FToolStripMenuItem";
-            this.文件FToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.文件FToolStripMenuItem.Text = "文件(&F)";
-            // 
-            // 关于AToolStripMenuItem
-            // 
-            this.关于AToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.关于ToolStripMenuItem});
-            this.关于AToolStripMenuItem.Name = "关于AToolStripMenuItem";
-            this.关于AToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.关于AToolStripMenuItem.Text = "关于(&A)";
-            // 
-            // 关于ToolStripMenuItem
-            // 
-            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.关于ToolStripMenuItem.Text = "关于...";
-            // 
-            // 打开SHPToolStripMenuItem
-            // 
-            this.打开SHPToolStripMenuItem.Name = "打开SHPToolStripMenuItem";
-            this.打开SHPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.打开SHPToolStripMenuItem.Text = "打开SHP";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -289,6 +290,7 @@
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "柳州勘测院地面站辅助工具";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -303,31 +305,31 @@
 
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem 地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 谷歌卫星ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 谷歌地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 百度地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 必应地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oSM地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aGS地图ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGoogleSatelliteMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGoogleMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemBaiduMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemBingMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenStreetMap;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemArcgisMap;
         private System.Windows.Forms.ToolStripMenuItem 工具ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 下载地图ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 影像拼接ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 航线ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 航线设计ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 航程计算ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 日志回放ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 坐标ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 定位坐标ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 坐标转换ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 显示网格ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDownload;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUnion;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAirline;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAirlinePlan;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAirlineSum;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemReplay;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCoordinate;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLocation;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCoordinateConvert;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSetting;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemShowGrid;
         private Map MainMap;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelInfo;
-        private System.Windows.Forms.ToolStripMenuItem 文件FToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开SHPToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于AToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFile;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenSHP;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAbout;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAboutMe;
     }
 }
 

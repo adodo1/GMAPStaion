@@ -20,6 +20,9 @@ namespace GMAPStaion
 
             MainMap.MouseWheel += MainMap_MouseWheel;
             MainMap.MouseMove += MainMap_MouseMove;
+
+            
+            
             Init();
         }
         /// <summary>
@@ -103,8 +106,8 @@ namespace GMAPStaion
         private void CheckedMap(ToolStripMenuItem menuItem)
         {
             ToolStripDropDownMenu menu = menuItem.Owner as ToolStripDropDownMenu;
-            foreach (ToolStripMenuItem item in menu.Items) {
-                item.Checked = false;
+            foreach (ToolStripItem item in menu.Items) {
+                if (item is ToolStripMenuItem) ((ToolStripMenuItem)item).Checked = false;
             }
             menuItem.Checked = true;
         }
@@ -174,7 +177,9 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemDownload_Click(object sender, EventArgs e)
         {
-
+            if (MainMap.SelectedArea.IsEmpty == true) return;
+            DownloadForm downloadForm = new DownloadForm(MainMap.MapProvider, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
+            downloadForm.ShowDialog(this);
         }
         /// <summary>
         /// 影像拼接
@@ -259,6 +264,31 @@ namespace GMAPStaion
         private void toolStripMenuItemOpenSHP_Click(object sender, EventArgs e)
         {
 
+        }
+        /// <summary>
+        /// 矩形框选
+        /// </summary>
+        private void toolStripButtonEnv_Click(object sender, EventArgs e)
+        {
+            toolStripButtonEnv.Checked = true;
+            MainMap.DisableAltForSelection = true;
+        }
+        /// <summary>
+        /// 多边形选择
+        /// </summary>
+        private void toolStripButtonPolygon_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 平移
+        /// </summary>
+        private void toolStripButtonPan_Click(object sender, EventArgs e)
+        {
+            MainMap.DisableAltForSelection = false;
+            foreach (ToolStripItem item in toolStripButtonPan.Owner.Items) {
+                if (item is ToolStripButton) ((ToolStripButton)item).Checked = false;
+            }
         }
     }
 }

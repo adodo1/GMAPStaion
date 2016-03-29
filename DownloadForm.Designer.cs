@@ -29,36 +29,39 @@
         private void InitializeComponent()
         {
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelRight = new System.Windows.Forms.Label();
+            this.labelLeft = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelMAP = new System.Windows.Forms.Label();
+            this.labelBottom = new System.Windows.Forms.Label();
+            this.labelTop = new System.Windows.Forms.Label();
             this.groupBoxSetting = new System.Windows.Forms.GroupBox();
-            this.dataGridViewLevel = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTiles = new System.Windows.Forms.DataGridView();
             this.groupBoxTongji = new System.Windows.Forms.GroupBox();
             this.buttonMakePY = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.richTextBoxInfo = new System.Windows.Forms.RichTextBox();
+            this.labelMAPNAME = new System.Windows.Forms.Label();
             this.ColumnCheaked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnBuffer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonBuffer = new System.Windows.Forms.Button();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxSetting.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLevel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTiles)).BeginInit();
             this.groupBoxTongji.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxInfo
             // 
-            this.groupBoxInfo.Controls.Add(this.label6);
-            this.groupBoxInfo.Controls.Add(this.label5);
-            this.groupBoxInfo.Controls.Add(this.label4);
-            this.groupBoxInfo.Controls.Add(this.label3);
+            this.groupBoxInfo.Controls.Add(this.labelMAPNAME);
+            this.groupBoxInfo.Controls.Add(this.labelTop);
+            this.groupBoxInfo.Controls.Add(this.labelBottom);
+            this.groupBoxInfo.Controls.Add(this.labelRight);
+            this.groupBoxInfo.Controls.Add(this.labelLeft);
             this.groupBoxInfo.Controls.Add(this.label2);
-            this.groupBoxInfo.Controls.Add(this.label1);
+            this.groupBoxInfo.Controls.Add(this.labelMAP);
             this.groupBoxInfo.Location = new System.Drawing.Point(9, 9);
             this.groupBoxInfo.Margin = new System.Windows.Forms.Padding(0);
             this.groupBoxInfo.Name = "groupBoxInfo";
@@ -67,23 +70,23 @@
             this.groupBoxInfo.TabStop = false;
             this.groupBoxInfo.Text = "信息";
             // 
-            // label4
+            // labelRight
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(199, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 12);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "经度 右：109.000";
+            this.labelRight.AutoSize = true;
+            this.labelRight.Location = new System.Drawing.Point(199, 44);
+            this.labelRight.Name = "labelRight";
+            this.labelRight.Size = new System.Drawing.Size(101, 12);
+            this.labelRight.TabIndex = 3;
+            this.labelRight.Text = "经度 右：109.000";
             // 
-            // label3
+            // labelLeft
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(64, 44);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "经度 左：108.000";
+            this.labelLeft.AutoSize = true;
+            this.labelLeft.Location = new System.Drawing.Point(64, 44);
+            this.labelLeft.Name = "labelLeft";
+            this.labelLeft.Size = new System.Drawing.Size(101, 12);
+            this.labelLeft.TabIndex = 2;
+            this.labelLeft.Text = "经度 左：108.000";
             // 
             // label2
             // 
@@ -94,68 +97,70 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "范围：";
             // 
-            // label1
+            // labelMAP
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "地图服务：XXXXX";
+            this.labelMAP.AutoSize = true;
+            this.labelMAP.Location = new System.Drawing.Point(17, 21);
+            this.labelMAP.Name = "labelMAP";
+            this.labelMAP.Size = new System.Drawing.Size(65, 12);
+            this.labelMAP.TabIndex = 0;
+            this.labelMAP.Text = "地图服务：";
             // 
-            // label5
+            // labelBottom
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(64, 66);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 12);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "纬度 下：24.000";
+            this.labelBottom.AutoSize = true;
+            this.labelBottom.Location = new System.Drawing.Point(64, 66);
+            this.labelBottom.Name = "labelBottom";
+            this.labelBottom.Size = new System.Drawing.Size(95, 12);
+            this.labelBottom.TabIndex = 4;
+            this.labelBottom.Text = "纬度 下：24.000";
             // 
-            // label6
+            // labelTop
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(199, 66);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(95, 12);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "纬度 上：25.000";
+            this.labelTop.AutoSize = true;
+            this.labelTop.Location = new System.Drawing.Point(199, 66);
+            this.labelTop.Name = "labelTop";
+            this.labelTop.Size = new System.Drawing.Size(95, 12);
+            this.labelTop.TabIndex = 5;
+            this.labelTop.Text = "纬度 上：25.000";
             // 
             // groupBoxSetting
             // 
             this.groupBoxSetting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxSetting.Controls.Add(this.dataGridViewLevel);
+            this.groupBoxSetting.Controls.Add(this.dataGridViewTiles);
             this.groupBoxSetting.Location = new System.Drawing.Point(335, 9);
             this.groupBoxSetting.Margin = new System.Windows.Forms.Padding(0);
             this.groupBoxSetting.Name = "groupBoxSetting";
             this.groupBoxSetting.Size = new System.Drawing.Size(253, 260);
             this.groupBoxSetting.TabIndex = 1;
             this.groupBoxSetting.TabStop = false;
-            this.groupBoxSetting.Text = "级别";
+            this.groupBoxSetting.Text = "瓦片";
             // 
-            // dataGridViewLevel
+            // dataGridViewTiles
             // 
-            this.dataGridViewLevel.AllowUserToDeleteRows = false;
-            this.dataGridViewLevel.AllowUserToOrderColumns = true;
-            this.dataGridViewLevel.AllowUserToResizeColumns = false;
-            this.dataGridViewLevel.AllowUserToResizeRows = false;
-            this.dataGridViewLevel.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewLevel.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridViewLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewLevel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTiles.AllowUserToAddRows = false;
+            this.dataGridViewTiles.AllowUserToDeleteRows = false;
+            this.dataGridViewTiles.AllowUserToOrderColumns = true;
+            this.dataGridViewTiles.AllowUserToResizeColumns = false;
+            this.dataGridViewTiles.AllowUserToResizeRows = false;
+            this.dataGridViewTiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewTiles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewTiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheaked,
             this.ColumnLevel,
             this.ColumnBuffer,
             this.ColumnNum});
-            this.dataGridViewLevel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewLevel.Location = new System.Drawing.Point(3, 17);
-            this.dataGridViewLevel.Name = "dataGridViewLevel";
-            this.dataGridViewLevel.RowHeadersVisible = false;
-            this.dataGridViewLevel.RowTemplate.Height = 23;
-            this.dataGridViewLevel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewLevel.Size = new System.Drawing.Size(247, 240);
-            this.dataGridViewLevel.TabIndex = 0;
+            this.dataGridViewTiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewTiles.Location = new System.Drawing.Point(3, 17);
+            this.dataGridViewTiles.Name = "dataGridViewTiles";
+            this.dataGridViewTiles.RowHeadersVisible = false;
+            this.dataGridViewTiles.RowTemplate.Height = 23;
+            this.dataGridViewTiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewTiles.Size = new System.Drawing.Size(247, 240);
+            this.dataGridViewTiles.TabIndex = 0;
+            this.dataGridViewTiles.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTiles_CellValidated);
             // 
             // groupBoxTongji
             // 
@@ -165,11 +170,10 @@
             this.groupBoxTongji.Size = new System.Drawing.Size(323, 162);
             this.groupBoxTongji.TabIndex = 2;
             this.groupBoxTongji.TabStop = false;
-            this.groupBoxTongji.Text = "统计";
             // 
             // buttonMakePY
             // 
-            this.buttonMakePY.Location = new System.Drawing.Point(426, 276);
+            this.buttonMakePY.Location = new System.Drawing.Point(445, 276);
             this.buttonMakePY.Name = "buttonMakePY";
             this.buttonMakePY.Size = new System.Drawing.Size(75, 23);
             this.buttonMakePY.TabIndex = 3;
@@ -179,9 +183,9 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(510, 276);
+            this.buttonCancel.Location = new System.Drawing.Point(526, 276);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(59, 23);
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "取消";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -189,44 +193,70 @@
             // 
             // richTextBoxInfo
             // 
-            this.richTextBoxInfo.BackColor = System.Drawing.SystemColors.Info;
+            this.richTextBoxInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBoxInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxInfo.Location = new System.Drawing.Point(3, 17);
             this.richTextBoxInfo.Name = "richTextBoxInfo";
             this.richTextBoxInfo.ReadOnly = true;
             this.richTextBoxInfo.Size = new System.Drawing.Size(317, 142);
             this.richTextBoxInfo.TabIndex = 0;
-            this.richTextBoxInfo.Text = "";
+            this.richTextBoxInfo.Text = "提示：\n 1.中国大陆地区目前影像最高等级19级\n 2.缓冲值表示往外扩展瓦片数量\n 3.值A表示该等级瓦片全部下载";
+            // 
+            // labelMAPNAME
+            // 
+            this.labelMAPNAME.AutoSize = true;
+            this.labelMAPNAME.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelMAPNAME.ForeColor = System.Drawing.Color.Brown;
+            this.labelMAPNAME.Location = new System.Drawing.Point(88, 21);
+            this.labelMAPNAME.Name = "labelMAPNAME";
+            this.labelMAPNAME.Size = new System.Drawing.Size(26, 12);
+            this.labelMAPNAME.TabIndex = 6;
+            this.labelMAPNAME.Text = "XXX";
             // 
             // ColumnCheaked
             // 
+            this.ColumnCheaked.DataPropertyName = "CHECKED";
             this.ColumnCheaked.FillWeight = 53.4267F;
             this.ColumnCheaked.HeaderText = "";
             this.ColumnCheaked.Name = "ColumnCheaked";
             // 
             // ColumnLevel
             // 
+            this.ColumnLevel.DataPropertyName = "LEVEL";
             this.ColumnLevel.FillWeight = 101.5228F;
             this.ColumnLevel.HeaderText = "等级";
             this.ColumnLevel.Name = "ColumnLevel";
             // 
             // ColumnBuffer
             // 
+            this.ColumnBuffer.DataPropertyName = "BUFFER";
             this.ColumnBuffer.FillWeight = 122.5252F;
             this.ColumnBuffer.HeaderText = "缓冲";
             this.ColumnBuffer.Name = "ColumnBuffer";
             // 
             // ColumnNum
             // 
+            this.ColumnNum.DataPropertyName = "NUMBER";
             this.ColumnNum.FillWeight = 122.5252F;
             this.ColumnNum.HeaderText = "数量";
             this.ColumnNum.Name = "ColumnNum";
+            // 
+            // buttonBuffer
+            // 
+            this.buttonBuffer.Location = new System.Drawing.Point(338, 276);
+            this.buttonBuffer.Name = "buttonBuffer";
+            this.buttonBuffer.Size = new System.Drawing.Size(75, 23);
+            this.buttonBuffer.TabIndex = 4;
+            this.buttonBuffer.Text = "智能外扩";
+            this.buttonBuffer.UseVisualStyleBackColor = true;
+            this.buttonBuffer.Click += new System.EventHandler(this.buttonBuffer_Click);
             // 
             // DownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(597, 307);
+            this.Controls.Add(this.buttonBuffer);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonMakePY);
             this.Controls.Add(this.groupBoxTongji);
@@ -241,7 +271,7 @@
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
             this.groupBoxSetting.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLevel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTiles)).EndInit();
             this.groupBoxTongji.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -250,21 +280,23 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBoxInfo;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelRight;
+        private System.Windows.Forms.Label labelLeft;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelMAP;
+        private System.Windows.Forms.Label labelTop;
+        private System.Windows.Forms.Label labelBottom;
         private System.Windows.Forms.GroupBox groupBoxSetting;
-        private System.Windows.Forms.DataGridView dataGridViewLevel;
+        private System.Windows.Forms.DataGridView dataGridViewTiles;
         private System.Windows.Forms.GroupBox groupBoxTongji;
         private System.Windows.Forms.Button buttonMakePY;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.RichTextBox richTextBoxInfo;
+        private System.Windows.Forms.Label labelMAPNAME;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheaked;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnLevel;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnBuffer;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNum;
+        private System.Windows.Forms.Button buttonBuffer;
     }
 }

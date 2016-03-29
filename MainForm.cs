@@ -62,10 +62,10 @@ namespace GMAPStaion
                 CheckedMap(toolStripMenuItemGoogleSatelliteMap);
                 
                 //MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;           // 默认地图
-                MainMap.Position = new PointLatLng(24.3094574737, 109.441029377);     // 地图中心点(北京)GPS坐标
+                MainMap.Position = new PointLatLng(24.305555555555557, 109.43);     // 地图中心点(北京)GPS坐标
                 //MainMap.MinZoom = GMapProviders.BaiduMap.MinZoom;                   // 地图最小比例
                 //MainMap.MaxZoom = GMapProviders.BaiduMap.MaxZoom ?? 24;             // 地图最大比例
-                MainMap.Zoom = 15;                                                  // 当前缩放等级
+                MainMap.Zoom = 18;                                                  // 当前缩放等级
                 MainMap.DragButton = MouseButtons.Left;                             // 鼠标平移键
 
                 
@@ -177,9 +177,7 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemDownload_Click(object sender, EventArgs e)
         {
-            if (MainMap.SelectedArea.IsEmpty == true) return;
-            DownloadForm downloadForm = new DownloadForm(MainMap.MapProvider, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
-            downloadForm.ShowDialog(this);
+            DownloadTiles();
         }
         /// <summary>
         /// 影像拼接
@@ -289,6 +287,22 @@ namespace GMAPStaion
             foreach (ToolStripItem item in toolStripButtonPan.Owner.Items) {
                 if (item is ToolStripButton) ((ToolStripButton)item).Checked = false;
             }
+        }
+        /// <summary>
+        /// 下载影像
+        /// </summary>
+        private void toolStripButtonDownload_Click(object sender, EventArgs e)
+        {
+            DownloadTiles();
+        }
+        /// <summary>
+        /// 下载影像
+        /// </summary>
+        private void DownloadTiles()
+        {
+            if (MainMap.SelectedArea.IsEmpty == true) return;
+            DownloadForm downloadForm = new DownloadForm(MainMap.MapProvider, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
+            downloadForm.ShowDialog(this);
         }
     }
 }

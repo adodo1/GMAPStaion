@@ -65,12 +65,14 @@
             this.toolStripMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAboutMe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonPan = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonEnv = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonPolygon = new System.Windows.Forms.ToolStripButton();
             this.MainMap = new GMAPStaion.Map();
-            this.toolStripButtonPan = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonDownload = new System.Windows.Forms.ToolStripButton();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -214,26 +216,26 @@
             // toolStripMenuItemDownload
             // 
             this.toolStripMenuItemDownload.Name = "toolStripMenuItemDownload";
-            this.toolStripMenuItemDownload.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemDownload.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemDownload.Text = "地图下载";
             this.toolStripMenuItemDownload.Click += new System.EventHandler(this.toolStripMenuItemDownload_Click);
             // 
             // toolStripMenuItemUnion
             // 
             this.toolStripMenuItemUnion.Name = "toolStripMenuItemUnion";
-            this.toolStripMenuItemUnion.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemUnion.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemUnion.Text = "影像拼接";
             this.toolStripMenuItemUnion.Click += new System.EventHandler(this.toolStripMenuItemUnion_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemCache
             // 
             this.toolStripMenuItemCache.Name = "toolStripMenuItemCache";
-            this.toolStripMenuItemCache.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemCache.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemCache.Text = "缓存地图";
             this.toolStripMenuItemCache.Click += new System.EventHandler(this.toolStripMenuItemCache_Click);
             // 
@@ -364,12 +366,28 @@
             this.toolStripSeparator5,
             this.toolStripButtonEnv,
             this.toolStripSeparator4,
-            this.toolStripButtonPolygon});
+            this.toolStripButtonPolygon,
+            this.toolStripSeparator6,
+            this.toolStripButtonDownload});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(680, 25);
             this.toolStrip.TabIndex = 3;
             this.toolStrip.Text = "工具栏";
+            // 
+            // toolStripButtonPan
+            // 
+            this.toolStripButtonPan.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPan.Image")));
+            this.toolStripButtonPan.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonPan.Name = "toolStripButtonPan";
+            this.toolStripButtonPan.Size = new System.Drawing.Size(49, 22);
+            this.toolStripButtonPan.Text = "平移";
+            this.toolStripButtonPan.Click += new System.EventHandler(this.toolStripButtonPan_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripButtonEnv
             // 
@@ -422,19 +440,19 @@
             this.MainMap.TabIndex = 2;
             this.MainMap.Zoom = 0D;
             // 
-            // toolStripButtonPan
+            // toolStripSeparator6
             // 
-            this.toolStripButtonPan.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPan.Image")));
-            this.toolStripButtonPan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonPan.Name = "toolStripButtonPan";
-            this.toolStripButtonPan.Size = new System.Drawing.Size(49, 22);
-            this.toolStripButtonPan.Text = "平移";
-            this.toolStripButtonPan.Click += new System.EventHandler(this.toolStripButtonPan_Click);
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripSeparator5
+            // toolStripButtonDownload
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            this.toolStripButtonDownload.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDownload.Image")));
+            this.toolStripButtonDownload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDownload.Name = "toolStripButtonDownload";
+            this.toolStripButtonDownload.Size = new System.Drawing.Size(49, 22);
+            this.toolStripButtonDownload.Text = "下载";
+            this.toolStripButtonDownload.Click += new System.EventHandler(this.toolStripButtonDownload_Click);
             // 
             // MainForm
             // 
@@ -504,6 +522,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonPolygon;
         private System.Windows.Forms.ToolStripButton toolStripButtonPan;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripButton toolStripButtonDownload;
     }
 }
 

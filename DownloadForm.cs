@@ -98,7 +98,40 @@ namespace GMAPStaion
         /// </summary>
         private void buttonMakePY_Click(object sender, EventArgs e)
         {
+            Dictionary<string, object> infos = new Dictionary<string, object>();
+            List<object> tiles = new List<object>();
 
+            infos["proxys"] = new List<string>()
+            {
+                // 代理列表
+            };
+            infos["baseurl"] = "http://khm{subdomain}.{server}/kh/v={version}&hl=en&x={x}&y={y}&z={zoom}";
+            infos["version"] = 198;
+            infos["server"] = "google.cn";
+            infos["subdomain"] = new List<string>() { "0", "1", "2" };
+            infos["tiles"] = tiles;
+            
+            foreach (DataGridViewRow rowView in dataGridViewTiles.Rows) {
+                DataRow row = ((DataRowView)rowView.DataBoundItem).Row as DataRow;
+
+                bool selected = Convert.ToBoolean(row["CHECKED"]);
+                if (selected == false) continue;
+                long tileMinX, tileMaxX, tileMinY, tileMaxY;
+                int zoom = GetZoom(row["LEVEL"]);       // 等级
+                int buffer = GetBuffer(row["BUFFER"]);  // 缓冲
+                long total = CoorExtent(zoom, buffer, out tileMinX, out tileMaxX, out tileMinY, out  tileMaxY);     // 求扩展
+
+                Dictionary<string, object> tile = new Dictionary<string, object>();
+                tile["zoom"] = zoom;
+                tile["buffer"] = buffer < 0 ? "ALL" : buffer.ToString();
+                tile["total"] = total;
+                tile["minx"] = tileMinX;
+                tile["maxx"] = tileMaxX;
+                tile["miny"] = tileMinY;
+                tile["maxy"] = tileMaxY;
+                tiles.Add(tile);
+            }
+            string text = Json.JsonSerialize<object>(infos);
         }
         /// <summary>
         /// 智能外扩

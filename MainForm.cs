@@ -1,6 +1,8 @@
 ﻿using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using GMAPStaion.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,38 +16,17 @@ namespace GMAPStaion
 {
     public partial class MainForm : Form
     {
+
+        private GMapOverlay drawnpolygonsoverlay = null;    // 绘制多边形
+        private GMapPolygon drawnpolygon = null;
+
         public MainForm()
         {
             InitializeComponent();
-
-            MainMap.MouseWheel += MainMap_MouseWheel;
-            MainMap.MouseMove += MainMap_MouseMove;
-
-            
-            
             Init();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainMap_MouseWheel(object sender, MouseEventArgs e)
-        {
-            UpdateInfo(e);
-        }
-        /// <summary>
-        /// 显示坐标
-        /// </summary>
-        private void MainMap_MouseMove(object sender, MouseEventArgs e)
-        {
-            UpdateInfo(e);
-        }
-        private void UpdateInfo(MouseEventArgs e)
-        {
-            PointLatLng pnew = MainMap.FromLocalToLatLng(e.X, e.Y);
-            toolStripStatusLabelInfo.Text = string.Format("经度:{0:0.000000} 纬度:{1:0.000000} 级别:{2}", pnew.Lng, pnew.Lat, MainMap.Zoom);
-        }
+
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -61,18 +42,131 @@ namespace GMAPStaion
                 ChangeMap(GMapProviders.GoogleSatelliteMap);
                 CheckedMap(toolStripMenuItemGoogleSatelliteMap);
                 
-                //MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;           // 默认地图
+                MainMap.MapProvider = GMapProviders.GoogleSatelliteMap;             // 默认地图
                 MainMap.Position = new PointLatLng(24.305555555555557, 109.43);     // 地图中心点(北京)GPS坐标
-                //MainMap.MinZoom = GMapProviders.BaiduMap.MinZoom;                   // 地图最小比例
-                //MainMap.MaxZoom = GMapProviders.BaiduMap.MaxZoom ?? 24;             // 地图最大比例
+                MainMap.MinZoom = GMapProviders.GoogleSatelliteMap.MinZoom;         // 地图最小比例
+                MainMap.MaxZoom = GMapProviders.GoogleSatelliteMap.MaxZoom ?? 24;   // 地图最大比例
                 MainMap.Zoom = 18;                                                  // 当前缩放等级
                 MainMap.DragButton = MouseButtons.Left;                             // 鼠标平移键
 
-                
+                // 鼠标
+                MainMap.MouseDown += MainMap_MouseDown;
+                MainMap.MouseMove += MainMap_MouseMove;
+                MainMap.MouseUp += MainMap_MouseUp;
+                MainMap.OnMapZoomChanged += MainMap_OnMapZoomChanged;
 
+                MainMap.OnMarkerLeave += MainMap_OnMarkerLeave;
+                MainMap.OnMarkerEnter += MainMap_OnMarkerEnter;
 
+                // 绘制多边形
+                drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
+                MainMap.Overlays.Add(drawnpolygonsoverlay);
+
+                List<PointLatLng> points = new List<PointLatLng>();
+                drawnpolygon = new GMapPolygon(points, "drawnpoly");
+                drawnpolygon.Stroke = new Pen(Color.Blue, 1.5f);
+                drawnpolygon.Fill = Brushes.Transparent;
             }
         }
+        /// <summary>
+        /// 鼠标移到图标上
+        /// </summary>
+        /// <param name="item"></param>
+        void MainMap_OnMarkerEnter(GMapMarker item)
+        {
+            
+        }
+        /// <summary>
+        /// 鼠标从图标上离开
+        /// </summary>
+        /// <param name="item"></param>
+        private void MainMap_OnMarkerLeave(GMapMarker item)
+        {
+            
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        private void MainMap_OnMapZoomChanged()
+        {
+            UpdateCoordinateInfo(null, null, MainMap.Zoom);
+        }
+        private double _lastlat = 0;        // 上次维度
+        private double _lastlng = 0;        // 上次经度
+        private double _lastzoom = 0;          // 上次等级
+        /// <summary>
+        /// 刷新经纬度坐标
+        /// </summary>
+        /// <param name="e"></param>
+        private void UpdateCoordinateInfo(double? lat, double? lng, double? zoom)
+        {
+            if (lat != null) _lastlat = (double)lat;
+            if (lng != null) _lastlng = (double)lng;
+            if (zoom != null) _lastzoom = (int)zoom;
+            toolStripStatusLabelInfo.Text = string.Format("经度:{0:0.000000} 纬度:{1:0.000000} 级别:{2}", _lastlng, _lastlat, _lastzoom);
+        }
+
+
+        #region 鼠标控制
+        private bool _isMouseDraging = false;       // 鼠标是否正在拖动
+        private bool _isMouseDown = false;          // 鼠标是否按下
+        private int _lastX = 0;                     // 由于莫名其妙的鼠标偏移 所以加上一个小偏移的判断
+        private int _lastY = 0;                     // 由于莫名其妙的鼠标偏移 所以加上一个小偏移的判断
+
+        /// <summary>
+        /// 鼠标按下
+        /// </summary>
+        private void MainMap_MouseDown(object sender, MouseEventArgs e)
+        {
+            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+            if (e.Button == MouseButtons.Left && ModifierKeys != Keys.Alt && ModifierKeys != Keys.Control) {
+                _isMouseDown = true;
+                _isMouseDraging = false;
+                _lastX = e.X;
+                _lastY = e.Y;
+            }
+            
+
+        }
+        /// <summary>
+        /// 鼠标移动
+        /// </summary>
+        private void MainMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+            UpdateCoordinateInfo(point.Lat, point.Lng, MainMap.Zoom);
+            
+            if (e.Button == MouseButtons.Left && _isMouseDown &&
+                (Math.Abs(e.X  - _lastX) >1 || Math.Abs(e.Y - _lastY) > 1))
+            {
+                // 正在拖动
+                _isMouseDraging = true;
+            }
+            else if (_isMouseDown) {
+                
+            }
+
+
+
+        }
+        /// <summary>
+        /// 鼠标抬起
+        /// </summary>
+        private void MainMap_MouseUp(object sender, MouseEventArgs e)
+        {
+            PointLatLng point = MainMap.FromLocalToLatLng(e.X, e.Y);
+
+            if (e.Button == MouseButtons.Left && _isMouseDown) {
+                _isMouseDown = false;
+                if (_isMouseDraging == false) {
+                    AddPolygonPoint(point.Lat, point.Lng);
+                    
+                }
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 显示网格
         /// </summary>
@@ -124,8 +218,8 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemBaiduMap_Click(object sender, EventArgs e)
         {
-            ChangeMap(GMapProviders.BaiduMap);
-            CheckedMap(sender as ToolStripMenuItem);
+            //ChangeMap(GMapProviders.BaiduMap);
+            //CheckedMap(sender as ToolStripMenuItem);
         }
         /// <summary>
         /// 必应地图
@@ -276,7 +370,7 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripButtonPolygon_Click(object sender, EventArgs e)
         {
-
+            toolStripButtonPolygon.Checked = true;
         }
         /// <summary>
         /// 平移
@@ -304,5 +398,74 @@ namespace GMAPStaion
             DownloadForm downloadForm = new DownloadForm(MainMap.MapProvider, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
             downloadForm.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        private void AddPolygonPoint(double lat, double lng)
+        {
+            List<PointLatLng> polygonPoints = new List<PointLatLng>();
+            if (drawnpolygonsoverlay.Polygons.Count == 0) {
+                drawnpolygon.Points.Clear();
+                drawnpolygonsoverlay.Polygons.Add(drawnpolygon);
+            }
+
+            drawnpolygon.Fill = Brushes.Transparent;
+
+            // remove full loop is exists
+            if (drawnpolygon.Points.Count > 1 &&
+                drawnpolygon.Points[0] == drawnpolygon.Points[drawnpolygon.Points.Count - 1])
+                drawnpolygon.Points.RemoveAt(drawnpolygon.Points.Count - 1); // unmake a full loop
+
+            drawnpolygon.Points.Add(new PointLatLng(lat, lng));
+
+            addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), lng, lat, 0);
+
+            MainMap.UpdatePolygonLocalPosition(drawnpolygon);
+
+            MainMap.Invalidate();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="lng"></param>
+        /// <param name="lat"></param>
+        /// <param name="alt"></param>
+        private void addpolygonmarkergrid(string tag, double lng, double lat, int alt)
+        {
+            try {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, Resources.marker);
+                m.ToolTipMode = MarkerTooltipMode.Never;
+                m.ToolTipText = "grid" + tag;
+                m.Tag = "grid" + tag;
+                GMapMarker mar = new GMarkerCross(point);
+
+                //MissionPlanner.GMapMarkerRectWPRad mBorders = new MissionPlanner.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
+                //GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                //{
+                //    mBorders.InnerMarker = m;
+                //}
+
+                drawnpolygonsoverlay.Markers.Add(m);
+                //drawnpolygonsoverlay.Markers.Add(mBorders);
+            }
+            catch (Exception ex) {
+                //log.Info(ex.ToString());
+            }
+        }
+        /// <summary>
+        /// 清除
+        /// </summary>
+        private void toolStripButtonClear_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
     }
 }

@@ -19,6 +19,8 @@ namespace GMAPStaion
 
         private GMapOverlay drawnpolygonsoverlay = null;    // 绘制多边形
         private GMapPolygon drawnpolygon = null;
+        private GMapMarker _curentMarker = null;
+        private bool _polygongridmode = false;
 
         public MainForm()
         {
@@ -74,7 +76,9 @@ namespace GMAPStaion
         /// <param name="item"></param>
         void MainMap_OnMarkerEnter(GMapMarker item)
         {
-            
+            if (!_isMouseDown) {
+                _curentMarker = item;
+            }
         }
         /// <summary>
         /// 鼠标从图标上离开
@@ -82,9 +86,10 @@ namespace GMAPStaion
         /// <param name="item"></param>
         private void MainMap_OnMarkerLeave(GMapMarker item)
         {
-            
+            if (!_isMouseDown) {
+                _curentMarker = null;
+            }
         }
-        
         /// <summary>
         /// 
         /// </summary>
@@ -138,16 +143,29 @@ namespace GMAPStaion
             UpdateCoordinateInfo(point.Lat, point.Lng, MainMap.Zoom);
             
             if (e.Button == MouseButtons.Left && _isMouseDown &&
-                (Math.Abs(e.X  - _lastX) >1 || Math.Abs(e.Y - _lastY) > 1))
-            {
-                // 正在拖动
+                (Math.Abs(e.X  - _lastX) >1 || Math.Abs(e.Y - _lastY) > 1)) {
+                // 正在拖动地图
                 _isMouseDraging = true;
-            }
-            else if (_isMouseDown) {
-                
-            }
 
-
+                // 正在移动标记点
+                GMarkerGoogle curentMarker = _curentMarker as GMarkerGoogle;
+                if (curentMarker != null) {
+                    try {
+                        // check if this is a grid point
+                        if (curentMarker.Tag.ToString().Contains("grid")) {
+                            // 移动多边形
+                            drawnpolygon.Points[
+                                int.Parse(curentMarker.Tag.ToString().Replace("grid", "")) - 1] =
+                                new PointLatLng(point.Lat, point.Lng);
+                            MainMap.UpdatePolygonLocalPosition(drawnpolygon);   
+                            // 移动标记点
+                            curentMarker.Position = point;
+                            MainMap.Invalidate();
+                        }
+                    }
+                    catch { }
+                }
+            }
 
         }
         /// <summary>
@@ -159,7 +177,9 @@ namespace GMAPStaion
 
             if (e.Button == MouseButtons.Left && _isMouseDown) {
                 _isMouseDown = false;
+                _curentMarker = null;
                 if (_isMouseDraging == false) {
+                    if (_polygongridmode == false) return;  // 如果没有在绘制多边形的模式 返回
                     AddPolygonPoint(point.Lat, point.Lng);
                     
                 }
@@ -370,6 +390,7 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripButtonPolygon_Click(object sender, EventArgs e)
         {
+            _polygongridmode = true;
             toolStripButtonPolygon.Checked = true;
         }
         /// <summary>
@@ -381,6 +402,8 @@ namespace GMAPStaion
             foreach (ToolStripItem item in toolStripButtonPan.Owner.Items) {
                 if (item is ToolStripButton) ((ToolStripButton)item).Checked = false;
             }
+            _polygongridmode = false;
+            _curentMarker = null;
         }
         /// <summary>
         /// 下载影像
@@ -398,9 +421,8 @@ namespace GMAPStaion
             DownloadForm downloadForm = new DownloadForm(MainMap.MapProvider, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
             downloadForm.ShowDialog(this);
         }
-
         /// <summary>
-        /// 
+        /// 给多边形添加节点
         /// </summary>
         /// <param name="lat"></param>
         /// <param name="lng"></param>
@@ -420,15 +442,12 @@ namespace GMAPStaion
                 drawnpolygon.Points.RemoveAt(drawnpolygon.Points.Count - 1); // unmake a full loop
 
             drawnpolygon.Points.Add(new PointLatLng(lat, lng));
-
             addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), lng, lat, 0);
-
             MainMap.UpdatePolygonLocalPosition(drawnpolygon);
-
             MainMap.Invalidate();
         }
         /// <summary>
-        /// 
+        /// 添加多边形控制点
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="lng"></param>
@@ -444,14 +463,7 @@ namespace GMAPStaion
                 m.Tag = "grid" + tag;
                 GMapMarker mar = new GMarkerCross(point);
 
-                //MissionPlanner.GMapMarkerRectWPRad mBorders = new MissionPlanner.GMapMarkerRectWPRad(point, (int)float.Parse(TXT_WPRad.Text), MainMap);
-                //GMapMarkerRect mBorders = new GMapMarkerRect(point);
-                //{
-                //    mBorders.InnerMarker = m;
-                //}
-
                 drawnpolygonsoverlay.Markers.Add(m);
-                //drawnpolygonsoverlay.Markers.Add(mBorders);
             }
             catch (Exception ex) {
                 //log.Info(ex.ToString());
@@ -462,7 +474,11 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripButtonClear_Click(object sender, EventArgs e)
         {
-
+            if (drawnpolygon == null) return;
+            drawnpolygon.Points.Clear();
+            drawnpolygonsoverlay.Markers.Clear();
+            MainMap.Invalidate();
+            
         }
 
 

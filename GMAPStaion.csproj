@@ -35,6 +35,9 @@
     <Reference Include="BitMiracle.LibTiff.NET">
       <HintPath>libs\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
+    <Reference Include="GeoUtility">
+      <HintPath>libs\GeoUtility.dll</HintPath>
+    </Reference>
     <Reference Include="GMap.NET.Core, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>libs\GMap.NET.Core.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -42,6 +45,9 @@
     <Reference Include="GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>libs\GMap.NET.WindowsForms.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="MAVLink">
+      <HintPath>libs\MAVLink.dll</HintPath>
     </Reference>
     <Reference Include="ProjNet">
       <HintPath>libs\ProjNet.dll</HintPath>
@@ -64,6 +70,7 @@
     <Compile Include="DownloadForm.Designer.cs">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grid\Grid.cs" />
     <Compile Include="Json.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -84,6 +91,10 @@
     <Compile Include="ShapeFileReader\ShapeFileReadInfo.cs" />
     <Compile Include="ShapeFileReader\ShapeFileRecord.cs" />
     <Compile Include="ShapeFileReader\ShapeType.cs" />
+    <Compile Include="Utilities\Locationwp.cs" />
+    <Compile Include="Utilities\PointLatLngAlt.cs" />
+    <Compile Include="Utilities\Rect.cs" />
+    <Compile Include="Utilities\utmpos.cs" />
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,6 +124,7 @@
   <ItemGroup>
     <None Include="Resources\marker.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

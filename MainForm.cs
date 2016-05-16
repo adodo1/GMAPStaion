@@ -66,7 +66,7 @@ namespace GMAPStaion
 
                 List<PointLatLng> points = new List<PointLatLng>();
                 drawnpolygon = new GMapPolygon(points, "drawnpoly");
-                drawnpolygon.Stroke = new Pen(Color.Blue, 1.5f);
+                drawnpolygon.Stroke = new Pen(Color.Lime, 2.0f);
                 drawnpolygon.Fill = Brushes.Transparent;
             }
         }
@@ -312,6 +312,25 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemAirlinePlan_Click(object sender, EventArgs e)
         {
+            List<PointLatLngAlt> list = new List<PointLatLngAlt>();
+            drawnpolygon.Points.ForEach(x => { list.Add(x); });
+            
+
+            // add crossover
+            Grid.StartPointLatLngAlt = list[0];
+
+            List<PointLatLngAlt> points = Grid.CreateGrid(list, // 测区范围
+                100,                                            // 高度
+                50,                                             // 航线间距
+                0,                                              // 拍照间隔
+                90,                                             // 航线角度
+                0,                                              // 外扩1
+                0,                                              // 外扩2
+                Grid.StartPosition.Point,
+                false,
+                0,
+                0);
+
 
         }
         /// <summary>

@@ -135,6 +135,7 @@ namespace GMAPStaion
 
         public int GetUTMZone()
         {
+            // https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
             int zone = (int)((Lng - -186.0) / 6.0);
             if (Lat < 0)
                 zone *= -1;

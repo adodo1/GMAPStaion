@@ -1,5 +1,8 @@
-﻿using System;
+﻿using GMap.NET;
+using GMap.NET.WindowsForms;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -7,8 +10,6 @@ namespace GMAPStaion
 {
     public class Grid
     {
-        //public static MissionPlanner.Plugin.PluginHost Host2;
-
         const float rad2deg = (float)(180 / Math.PI);
         const float deg2rad = (float)(1.0 / rad2deg);
 
@@ -28,41 +29,61 @@ namespace GMAPStaion
             BottomLeft = 1,
             TopLeft = 2,
             BottomRight = 3,
-            TopRight = 4
+            TopRight = 4,
+            Point = 5
         }
 
-        static void addtomap(linelatlng pos)
-        {
-            return;
-            //List<PointLatLng> list = new List<PointLatLng>();
-            //list.Add(pos.p1.ToLLA());
-            //list.Add(pos.p2.ToLLA());
+        public static PointLatLngAlt StartPointLatLngAlt = PointLatLngAlt.Zero;
 
-            //   polygons.Routes.Add(new GMapRoute(list, "test") { Stroke = new System.Drawing.Pen(System.Drawing.Color.Yellow,4) });
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="pos"></param>
+        //static void addtomap(linelatlng pos)
+        //{
+        //    List<PointLatLng> list = new List<PointLatLng>();
+        //    list.Add(pos.p1.ToLLA());
+        //    list.Add(pos.p2.ToLLA());
+        //    polygons.Routes.Add(new GMapRoute(list, "test") { Stroke = new System.Drawing.Pen(System.Drawing.Color.Yellow, 4) });
+        //    map.ZoomAndCenterRoutes("polygons");
+        //}
 
-            //.Markers.Add(new GMapMarkerGoogleRed(pnt));
 
-            //map.ZoomAndCenterRoutes("polygons");
+        ///// <summary>
+        ///// this is a debug function
+        ///// </summary>
+        ///// <param name="pos"></param>
+        ///// <param name="tag"></param>
+        //static void addtomap(utmpos pos, string tag)
+        //{
+        //    if (tag == "M")
+        //        return;
 
-            // map.Invalidate();
-        }
+        //    polygons.Markers.Add(new GMapMarkerWP(pos.ToLLA(), tag));
 
+        //    map.ZoomAndCenterMarkers("polygons");
+
+        //    map.Invalidate();
+        //}
+
+        //static GMapOverlay polygons = new GMapOverlay("polygons");
+        //static GMapControl map = new GMapControl();
 
         /// <summary>
-        /// this is a debug function
+        /// 关键函数
         /// </summary>
-        /// <param name="pos"></param>
-        /// <param name="tag"></param>
-        static void addtomap(utmpos pos, string tag)
-        {
-            //tag = (no++).ToString();
-            //polygons.Markers.Add(new GMapMarkerGoogleRed(pos.ToLLA()));// { ToolTipText = tag, ToolTipMode = MarkerTooltipMode.Always } );
-
-            //map.ZoomAndCenterMarkers("polygons");
-
-            //map.Invalidate();
-        }
-
+        /// <param name="polygon">测区范围</param>
+        /// <param name="altitude">飞行高度</param>
+        /// <param name="distance">航线间距</param>
+        /// <param name="spacing">拍照间隔</param>
+        /// <param name="angle">航线角度</param>
+        /// <param name="overshoot1">向往扩展1</param>
+        /// <param name="overshoot2">向外扩张2</param>
+        /// <param name="startpos">起始航电</param>
+        /// <param name="shutter">电子快门</param>
+        /// <param name="minLaneSeparation">最小??</param>
+        /// <param name="leadin">引导线</param>
+        /// <returns></returns>
         public static List<PointLatLngAlt> CreateGrid(List<PointLatLngAlt> polygon, double altitude, double distance, double spacing, double angle, double overshoot1, double overshoot2, StartPosition startpos, bool shutter, float minLaneSeparation, float leadin = 0)
         {
             if (spacing < 10 && spacing != 0)
@@ -74,7 +95,6 @@ namespace GMAPStaion
             if (polygon.Count == 0)
                 return new List<PointLatLngAlt>();
 
-
             // Make a non round number in case of corner cases
             if (minLaneSeparation != 0)
                 minLaneSeparation += 0.5F;
@@ -83,34 +103,35 @@ namespace GMAPStaion
 
             List<PointLatLngAlt> ans = new List<PointLatLngAlt>();
 
+            // 计算当前精度在墨卡托坐标的哪个带里
             // utm zone distance calcs will be done in
             int utmzone = polygon[0].GetUTMZone();
-
+            // 将经纬度坐标点转成墨卡托坐标
             // utm position list
             List<utmpos> utmpositions = utmpos.ToList(PointLatLngAlt.ToUTM(utmzone, polygon), utmzone);
-
+            // 闭合范围
             // close the loop if its not already
             if (utmpositions[0] != utmpositions[utmpositions.Count - 1])
                 utmpositions.Add(utmpositions[0]); // make a full loop
-
+            // 获取最小的外包矩形
             // get mins/maxs of coverage area
             Rect area = getPolyMinMax(utmpositions);
-
+            // 计算矩形对角线长度
             // get initial grid
-
             // used to determine the size of the outer grid area
             double diagdist = area.DiagDistance();
-
+            // 好像是保存结果的
             // somewhere to store out generated lines
             List<linelatlng> grid = new List<linelatlng>();
+            // 航线条数
             // number of lines we need
             int lines = 0;
-
+            // 区域中点XY
             // get start point middle
             double x = area.MidWidth;
             double y = area.MidHeight;
 
-            addtomap(new utmpos(x, y, utmzone), "Base");
+            //addtomap(new utmpos(x, y, utmzone), "Base");
 
             // get left extent
             double xb1 = x;
@@ -122,7 +143,7 @@ namespace GMAPStaion
 
             utmpos left = new utmpos(xb1, yb1, utmzone);
 
-            addtomap(left, "left");
+            //addtomap(left, "left");
 
             // get right extent
             double xb2 = x;
@@ -134,7 +155,7 @@ namespace GMAPStaion
 
             utmpos right = new utmpos(xb2, yb2, utmzone);
 
-            addtomap(right, "right");
+            //addtomap(right, "right");
 
             // set start point to left hand side
             x = xb1;
@@ -259,19 +280,20 @@ namespace GMAPStaion
             // debug
             foreach (linelatlng line in grid)
             {
-                addtomap(line);
+                //addtomap(line);
             }
 
             if (grid.Count == 0)
                 return ans;
 
-            utmpos startposutm = new utmpos();
+            utmpos startposutm;
 
             switch (startpos)
             {
                 default:
                 case StartPosition.Home:
                     //startposutm = new utmpos(Host2.cs.HomeLocation);
+                    startposutm = new utmpos(area.Left, area.Bottom, utmzone);
                     break;
                 case StartPosition.BottomLeft:
                     startposutm = new utmpos(area.Left, area.Bottom, utmzone);
@@ -285,7 +307,9 @@ namespace GMAPStaion
                 case StartPosition.TopRight:
                     startposutm = new utmpos(area.Right, area.Top, utmzone);
                     break;
-
+                case StartPosition.Point:
+                    startposutm = new utmpos(StartPointLatLngAlt);
+                    break;
             }
 
             // find closest line point to startpos
@@ -303,6 +327,11 @@ namespace GMAPStaion
                 lastpnt = closest.p2;
             }
 
+            // S =  start
+            // E = end
+            // ME = middle end
+            // SM = start middle
+
             while (grid.Count > 0)
             {
                 // for each line, check which end of the line is the next closest
@@ -311,11 +340,14 @@ namespace GMAPStaion
                     utmpos newstart = newpos(closest.p1, angle, -leadin);
                     newstart.Tag = "S";
 
-                    addtomap(newstart, "S");
+                    //addtomap(newstart, "S");
                     ans.Add(newstart);
 
-                    if (spacing > 0)
-                    {
+                    closest.p1.Tag = "SM";
+                    //addtomap(closest.p1, "SM");
+                    ans.Add(closest.p1);
+
+                    if (spacing > 0) {
                         for (int d = (int)(spacing - ((closest.basepnt.GetDistance(closest.p1)) % spacing));
                             d < (closest.p1.GetDistance(closest.p2));
                             d += (int)spacing)
@@ -324,15 +356,19 @@ namespace GMAPStaion
                             double ay = closest.p1.y;
 
                             newpos(ref ax, ref ay, angle, d);
-                            addtomap(new utmpos(ax, ay, utmzone), "M");
-                            ans.Add((new utmpos(ax, ay, utmzone) { Tag = "M" }));
+                            var utmpos1 = new utmpos(ax, ay, utmzone) { Tag = "M" };
+                            //addtomap(utmpos1, "M");
+                            ans.Add(utmpos1);
                         }
                     }
 
+                    closest.p2.Tag = "ME";
+                    //addtomap(closest.p2, "ME");
+                    ans.Add(closest.p2);
 
                     utmpos newend = newpos(closest.p2, angle, overshoot1);
                     newend.Tag = "E";
-                    addtomap(newend, "E");
+                    //addtomap(newend, "E");
                     ans.Add(newend);
 
                     lastpnt = closest.p2;
@@ -347,8 +383,12 @@ namespace GMAPStaion
                 {
                     utmpos newstart = newpos(closest.p2, angle, leadin);
                     newstart.Tag = "S";
-                    addtomap(newstart, "S");
+                    //addtomap(newstart, "S");
                     ans.Add(newstart);
+
+                    closest.p2.Tag = "SM";
+                    //addtomap(closest.p2, "SM");
+                    ans.Add(closest.p2);
 
                     if (spacing > 0)
                     {
@@ -360,16 +400,19 @@ namespace GMAPStaion
                             double ay = closest.p2.y;
 
                             newpos(ref ax, ref ay, angle, -d);
-                            addtomap(new utmpos(ax, ay, utmzone), "M");
-                            ans.Add((new utmpos(ax, ay, utmzone) { Tag = "M" }));
+                            var utmpos2 = new utmpos(ax, ay, utmzone) { Tag = "M" };
+                            //addtomap(utmpos2, "M");
+                            ans.Add(utmpos2);
                         }
                     }
 
+                    closest.p1.Tag = "ME";
+                    //addtomap(closest.p1, "ME");
+                    ans.Add(closest.p1);
+
                     utmpos newend = newpos(closest.p1, angle, -overshoot2);
                     newend.Tag = "E";
-                    //   if (overshoot2 > 0)
-                    //       ans.Add(new utmpos(closest.p1) { Tag = "M" });
-                    addtomap(newend, "E");
+                    //addtomap(newend, "E");
                     ans.Add(newend);
 
                     lastpnt = closest.p1;

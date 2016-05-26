@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\GMapMarkerWP.cs" />
     <Compile Include="DownloadForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,12 +86,11 @@
     <Compile Include="Maps\IStriptMaker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShapeFileReader\DBFField.cs" />
-    <Compile Include="ShapeFileReader\ShapeFile.cs" />
-    <Compile Include="ShapeFileReader\ShapeFileHeader.cs" />
-    <Compile Include="ShapeFileReader\ShapeFileReadInfo.cs" />
-    <Compile Include="ShapeFileReader\ShapeFileRecord.cs" />
-    <Compile Include="ShapeFileReader\ShapeType.cs" />
+    <Compile Include="ShapeLib\c.cs" />
+    <Compile Include="ShapeLib\dbfopen.cs" />
+    <Compile Include="ShapeLib\shapefil.cs" />
+    <Compile Include="ShapeLib\shpopen.cs" />
+    <Compile Include="ShapeLib\shptree.cs" />
     <Compile Include="Utilities\Locationwp.cs" />
     <Compile Include="Utilities\PointLatLngAlt.cs" />
     <Compile Include="Utilities\Rect.cs" />

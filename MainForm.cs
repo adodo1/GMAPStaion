@@ -3,6 +3,8 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using GMAPStaion.Properties;
+using ProjNet.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +21,7 @@ namespace GMAPStaion
 
         private GMapOverlay drawnpolygonsoverlay = null;    // 绘制多边形
         private GMapPolygon drawnpolygon = null;
+        private GMapOverlay routesOverlay = null;           // 航线图层
         private GMapMarker _curentMarker = null;
         private bool _polygongridmode = false;
 
@@ -34,8 +37,7 @@ namespace GMAPStaion
         /// </summary>
         private void Init()
         {
-            if (!GMapControl.IsDesignerHosted)
-            {
+            if (!GMapControl.IsDesignerHosted) {
                 GMapProviders.GoogleMap.TryCorrectVersion = false;
                 GMapProviders.GoogleSatelliteMap.TryCorrectVersion = false;
                 GMapProviders.GoogleChinaMap.TryCorrectVersion = false;
@@ -68,6 +70,10 @@ namespace GMAPStaion
                 drawnpolygon = new GMapPolygon(points, "drawnpoly");
                 drawnpolygon.Stroke = new Pen(Color.Lime, 2.0f);
                 drawnpolygon.Fill = Brushes.Transparent;
+
+                // 添加航线图层
+                routesOverlay = new GMapOverlay("routes");
+                MainMap.Overlays.Add(routesOverlay);
             }
         }
         /// <summary>
@@ -312,26 +318,163 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemAirlinePlan_Click(object sender, EventArgs e)
         {
+            AirlinePlan();
+        }
+        private bool _isPlanStart = false;
+        /// <summary>
+        /// 航线设计
+        /// </summary>
+        private void AirlinePlan(double altitude = 100, double? angle = null, double distance = 80, int spacing = 0)
+        {
+            if (_isPlanStart) return;
+            _isPlanStart = true;
+
             List<PointLatLngAlt> list = new List<PointLatLngAlt>();
-            drawnpolygon.Points.ForEach(x => { list.Add(x); });
-            
+            drawnpolygon.Points.ForEach(x => { list.Add(x); });         // 
+            if (angle == null) angle = GetAngleOfLongestSide(list);     // 航线角度
+            MainMap.HoldInvalidation = true;                            // 地图暂停刷新
 
-            // add crossover
-            Grid.StartPointLatLngAlt = list[0];
+            routesOverlay.Routes.Clear();           // 清除路径
+            routesOverlay.Polygons.Clear();         // 清除多边形
+            routesOverlay.Markers.Clear();          // 清除标记
 
-            List<PointLatLngAlt> points = Grid.CreateGrid(list, // 测区范围
-                100,                                            // 高度
-                50,                                             // 航线间距
-                0,                                              // 拍照间隔
-                90,                                             // 航线角度
-                0,                                              // 外扩1
-                0,                                              // 外扩2
-                Grid.StartPosition.Point,
-                false,
-                0,
-                0);
+            try {
+                // add crossover
+                //Grid.StartPointLatLngAlt = list[0];
+
+                // 计算航线
+                List<PointLatLngAlt> points = Grid.CreateGrid(list, // 测区范围
+                    altitude,                                       // 高度
+                    distance,                                       // 航线间距
+                    spacing,                                        // 拍照间隔
+                    (double)angle,                                  // 航线角度
+                    0,                                              // 外扩1
+                    0,                                              // 外扩2
+                    Grid.StartPosition.TopLeft,                     // 起始航点
+                    false,
+                    0,
+                    0);
+
+                if (checkBoxCross.Checked) {
+                    // 十字航线
+                    Grid.StartPointLatLngAlt = list[list.Count - 1];
+                    List<PointLatLngAlt> pointsCross = Grid.CreateGrid(list,    // 测区范围
+                        altitude,                                       // 高度
+                        distance,                                       // 航线间距
+                        spacing,                                        // 拍照间隔
+                        (double)angle + 90,                             // 航线角度
+                        0,                                              // 外扩1
+                        0,                                              // 外扩2
+                        Grid.StartPosition.Point,                       // 起始航点
+                        false,
+                        0,
+                        0);
+                    points.AddRange(pointsCross);
+                }
 
 
+                if (points.Count == 0) return;
+
+                //
+                int strips = 0;     // 航线条数
+                int images = 0;     // 照片张数
+                int a = 1;
+                PointLatLngAlt prevpoint = points[0];
+                float routetotal = 0;
+                List<PointLatLng> segment = new List<PointLatLng>();
+                
+                // 
+                foreach (var item in points) {
+                    // TAG编码：
+                    // M-拍照点
+                    // S-线段起始
+                    // E-线段结束
+                    if (item.Tag.Contains("M")) {
+                        images++;       // 照片张数加一
+                        // 绘制拍照点
+                        if (checkBoxInternals.Checked) {
+                            routesOverlay.Markers.Add(new GMarkerGoogle(item, GMarkerGoogleType.green) { ToolTipText = a.ToString(), ToolTipMode = MarkerTooltipMode.OnMouseOver });
+                            segment.Add(prevpoint);
+                            segment.Add(item);
+                            prevpoint = item;
+                        }
+                        #region 拍摄范围 暂时用不到
+                        // 绘制拍摄范围 footprint
+                        //try
+                        //{
+                        //    if (TXT_fovH.Text != "")
+                        //    {
+                        //        double fovh = double.Parse(TXT_fovH.Text);
+                        //        double fovv = double.Parse(TXT_fovV.Text);
+
+                        //        double startangle = 0;
+
+                        //        if (!CHK_camdirection.Checked)
+                        //        {
+                        //            startangle = 90;
+                        //        }
+
+                        //        double angle1 = startangle - (Math.Tan((fovv / 2.0) / (fovh / 2.0)) * rad2deg);
+                        //        double dist1 = Math.Sqrt(Math.Pow(fovh / 2.0, 2) + Math.Pow(fovv / 2.0, 2));
+
+                        //        double bearing = (double)NUM_angle.Value;// (prevpoint.GetBearing(item) + 360.0) % 360;
+
+                        //        List<PointLatLng> footprint = new List<PointLatLng>();
+                        //        footprint.Add(item.newpos(bearing + angle1, dist1));
+                        //        footprint.Add(item.newpos(bearing + 180 - angle1, dist1));
+                        //        footprint.Add(item.newpos(bearing + 180 + angle1, dist1));
+                        //        footprint.Add(item.newpos(bearing - angle1, dist1));
+
+                        //        GMapPolygon poly = new GMapPolygon(footprint, a.ToString());
+                        //        poly.Stroke = new Pen(Color.FromArgb(250 - ((a * 5) % 240), 250 - ((a * 3) % 240), 250 - ((a * 9) % 240)), 1);
+                        //        poly.Fill = new SolidBrush(Color.FromArgb(40, Color.Purple));
+                        //        if (CHK_footprints.Checked)
+                        //            routesOverlay.Polygons.Add(poly);
+                        //    }
+                        //}
+                        //catch { }
+                        #endregion
+                    }
+                    else {
+                        strips++;   // 航线条数加一
+                        if (checkBoxMarkers.Checked) {
+                            // 显示航点
+                            var marker = new GMapMarkerWP(item, a.ToString()) { ToolTipText = a.ToString(), ToolTipMode = MarkerTooltipMode.OnMouseOver };
+                            routesOverlay.Markers.Add(marker);
+                        }
+
+                        segment.Add(prevpoint);
+                        segment.Add(item);
+                        prevpoint = item;
+                        a++;    // 航点加一
+                    }
+                    GMapRoute seg = new GMapRoute(segment, "segment" + a.ToString());
+                    seg.Stroke = new Pen(Color.Yellow, 4);
+                    seg.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+                    seg.IsHitTestVisible = true;
+                    if (checkBoxGrid.Checked)
+                        routesOverlay.Routes.Add(seg);
+                    routetotal = routetotal + (float)seg.Distance;      // 总距离
+                    segment.Clear();
+                }
+
+                // 绘制完了 写信息
+                numericUpDownAngle.Value = (decimal)angle;              // 航线角度
+                labelArea.Text = (CalcPolygonArea(list) / 1000000.0).ToString("0.##平方千米");     // 测区面积
+                labelDistance.Text = routetotal.ToString("0.#千米");    // 航线长度
+                labelLineDistance.Text = distance.ToString("0.#米");    // 航线间距
+                labelSpacing.Text = spacing.ToString("0.#米");          // 照片间隔
+
+
+
+            }
+            catch (Exception ex) {
+                throw;
+            }
+            finally {
+                MainMap.HoldInvalidation = true;                    // 重启地图刷新
+                _isPlanStart = false;
+            }
         }
         /// <summary>
         /// 航程计算
@@ -497,10 +640,136 @@ namespace GMAPStaion
             drawnpolygon.Points.Clear();
             drawnpolygonsoverlay.Markers.Clear();
             MainMap.Invalidate();
-            
+
         }
 
+        #region 航线设计
+        /// <summary>
+        /// 获取最长边的角度
+        /// </summary>
+        /// <param name="list">多边形</param>
+        /// <returns></returns>
+        private double GetAngleOfLongestSide(List<PointLatLngAlt> list)
+        {
+            if (list.Count == 0) return 0;
+            double angle = 0;
+            double maxdist = 0;
+            PointLatLngAlt last = list[list.Count - 1];
+            foreach (var item in list) {
+                if (item.GetDistance(last) > maxdist) {
+                    angle = item.GetBearing(last);
+                    maxdist = item.GetDistance(last);
+                }
+                last = item;
+            }
+            return (angle + 360) % 360;
+        }
+        /// <summary>
+        /// 计算区域面积
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <returns></returns>
+        private double CalcPolygonArea(List<PointLatLngAlt> polygon)
+        {
+            // should be a closed polygon
+            // coords are in lat long
+            // need utm to calc area
 
+            if (polygon.Count == 0) {
+                //CustomMessageBox.Show("Please define a polygon!");
+                return 0;
+            }
+
+            // close the polygon 闭合范围
+            if (polygon[0] != polygon[polygon.Count - 1])
+                polygon.Add(polygon[0]); // make a full loop
+
+            CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
+            GeographicCoordinateSystem wgs84 = GeographicCoordinateSystem.WGS84;
+            int utmzone = (int)((polygon[0].Lng - -186.0) / 6.0);
+            IProjectedCoordinateSystem utm = ProjectedCoordinateSystem.WGS84_UTM(utmzone, polygon[0].Lat < 0 ? false : true);
+            ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(wgs84, utm);
+
+            double prod1 = 0;
+            double prod2 = 0;
+
+            for (int a = 0; a < (polygon.Count - 1); a++) {
+                double[] pll1 = { polygon[a].Lng, polygon[a].Lat };
+                double[] pll2 = { polygon[a + 1].Lng, polygon[a + 1].Lat };
+                double[] p1 = trans.MathTransform.Transform(pll1);
+                double[] p2 = trans.MathTransform.Transform(pll2);
+                prod1 += p1[0] * p2[1];
+                prod2 += p1[1] * p2[0];
+            }
+
+            double answer = (prod1 - prod2) / 2;
+            if (polygon[0] == polygon[polygon.Count - 1])
+                polygon.RemoveAt(polygon.Count - 1); // unmake a full loop
+            return Math.Abs(answer);
+        }
+        /// <summary>
+        /// 格式化时间
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        private string FormatTime(double seconds) {
+            if (seconds < 0)
+                return "Infinity Seconds";
+
+            double secs = seconds % 60;
+            int mins = (int)(seconds / 60) % 60;
+            int hours = (int)(seconds / 3600) % 24;
+
+            if (hours > 0) {
+                return hours + ":" + mins.ToString("00") + ":" + secs.ToString("00") + " Hours";
+            }
+            else if (mins > 0) {
+                return mins + ":" + secs.ToString("00") + " Minutes";
+            }
+            else {
+                return secs.ToString("0.00") + " Seconds";
+            }
+        }
+        /// <summary>
+        /// 参数计算
+        /// </summary>
+        private void DoCalc()
+        {
+
+        }
+        #endregion
+
+        /// <summary>
+        /// 航线角度
+        /// </summary>
+        private void numericUpDownAngle_ValueChanged(object sender, EventArgs e)
+        {
+            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            MainMap.Invalidate();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void numericUpDownDistance_ValueChanged(object sender, EventArgs e)
+        {
+            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            MainMap.Invalidate();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void checkBoxCross_CheckedChanged(object sender, EventArgs e)
+        {
+            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            MainMap.Invalidate();
+        }
+        /// <summary>
+        /// 导出SHP数据
+        /// </summary>
+        private void toolStripMenuItemExpSHP_Click(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

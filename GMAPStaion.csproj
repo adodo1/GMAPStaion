@@ -90,6 +90,7 @@
     <Compile Include="ShapeLib\dbfopen.cs" />
     <Compile Include="ShapeLib\shapefil.cs" />
     <Compile Include="ShapeLib\shpopen.cs" />
+    <Compile Include="ShapeLib\shprecord.cs" />
     <Compile Include="ShapeLib\shptree.cs" />
     <Compile Include="Utilities\Locationwp.cs" />
     <Compile Include="Utilities\PointLatLngAlt.cs" />

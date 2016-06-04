@@ -96,6 +96,7 @@
     <Compile Include="Utilities\PointLatLngAlt.cs" />
     <Compile Include="Utilities\Rect.cs" />
     <Compile Include="Utilities\utmpos.cs" />
+    <Compile Include="WPTFileClass.cs" />
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </EmbeddedResource>

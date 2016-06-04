@@ -25,6 +25,9 @@ namespace GMAPStaion
         private GMapPolygon drawnpolygon = null;
         private GMapOverlay routesOverlay = null;           // 航线图层
         private GMapMarker _curentMarker = null;
+
+        private GMapOverlay waypointlinelay = null;         // WPT航线图层
+
         private bool _polygongridmode = false;
 
         public MainForm()
@@ -76,6 +79,10 @@ namespace GMAPStaion
                 // 添加航线图层
                 routesOverlay = new GMapOverlay("routes");
                 MainMap.Overlays.Add(routesOverlay);
+
+                // 添加WPT航点航线图层
+                waypointlinelay = new GMapOverlay("航点航线");
+                MainMap.Overlays.Add(waypointlinelay);
             }
         }
         /// <summary>
@@ -766,6 +773,13 @@ namespace GMAPStaion
             MainMap.Invalidate();
         }
         /// <summary>
+        /// 导出
+        /// </summary>
+        private void toolStripSplitButtonExport_ButtonClick(object sender, EventArgs e)
+        {
+            toolStripSplitButtonExport.ShowDropDown();
+        }
+        /// <summary>
         /// 导出SHP数据
         /// </summary>
         private void toolStripMenuItemExpSHP_Click(object sender, EventArgs e)
@@ -951,6 +965,70 @@ namespace GMAPStaion
             catch (Exception ex) {
                 return false;
             }
+        }
+        /// <summary>
+        /// 打开WPT航点文件
+        /// </summary>
+        private void toolStripMenuItemOpenWPT_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 拖拽完成
+        /// </summary>
+        private void MainMap_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            // 
+            foreach (string file in files) {
+                string extname = System.IO.Path.GetExtension(file).ToLower();
+                switch (extname) {
+                    case ".wpt":
+                        // 添加WPT航点文件
+                        AddWPT(file);
+                        break;
+                    case ".log":
+                        // 添加航飞日志
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+
+
+        }
+        /// <summary>
+        /// 拖拽开始
+        /// </summary>
+        private void MainMap_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else { e.Effect = DragDropEffects.None; }
+        }
+        /// <summary>
+        /// 添加WPT文件
+        /// </summary>
+        /// <param name="file"></param>
+        private void AddWPT(string file)
+        {
+            WPTFileClass wptfile = new WPTFileClass(file);
+            DataTable table = wptfile.GetData;
+
+            List<PointLatLng> points = new List<PointLatLng>();
+            foreach (DataRow row in table.Rows) {
+                string no = (string)row["NO"];
+                double lat = (double)row["LAT"];
+                double lng = (double)row["LNG"];
+                double att = (double)row["ATT"];
+                points.Add(new PointLatLng(lat, lng));
+            }
+            GMapRoute route = new GMapRoute(points, "WPT LINE");
+            route.Stroke = new Pen(Color.Red, 2);
+            route.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            waypointlinelay.Routes.Add(route);
         }
 
     }

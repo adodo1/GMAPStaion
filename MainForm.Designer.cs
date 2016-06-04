@@ -74,9 +74,10 @@
             this.toolStripButtonClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonDownload = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSplitButtonExport = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItemExpSHP = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.MainMap = new GMAPStaion.Map();
             this.groupBoxPro = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelPro = new System.Windows.Forms.TableLayoutPanel();
             this.label01 = new System.Windows.Forms.Label();
@@ -174,8 +175,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.toolStripSplitButtonExport = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItemExpSHP = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemOpenWPT = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonDoufu = new System.Windows.Forms.ToolStripButton();
+            this.MainMap = new GMAPStaion.Map();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -250,7 +254,8 @@
             // toolStripMenuItemFile
             // 
             this.toolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemOpenSHP});
+            this.toolStripMenuItemOpenSHP,
+            this.toolStripMenuItemOpenWPT});
             this.toolStripMenuItemFile.Name = "toolStripMenuItemFile";
             this.toolStripMenuItemFile.Size = new System.Drawing.Size(59, 20);
             this.toolStripMenuItemFile.Text = "文件(&F)";
@@ -508,7 +513,10 @@
             this.toolStripButtonClear,
             this.toolStripSeparator7,
             this.toolStripButtonDownload,
-            this.toolStripSplitButtonExport});
+            this.toolStripSeparator8,
+            this.toolStripSplitButtonExport,
+            this.toolStripSeparator9,
+            this.toolStripButtonDoufu});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(872, 25);
@@ -582,6 +590,24 @@
             this.toolStripButtonDownload.Text = "下载";
             this.toolStripButtonDownload.Click += new System.EventHandler(this.toolStripButtonDownload_Click);
             // 
+            // toolStripSplitButtonExport
+            // 
+            this.toolStripSplitButtonExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemExpSHP});
+            this.toolStripSplitButtonExport.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonExport.Image")));
+            this.toolStripSplitButtonExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButtonExport.Name = "toolStripSplitButtonExport";
+            this.toolStripSplitButtonExport.Size = new System.Drawing.Size(61, 22);
+            this.toolStripSplitButtonExport.Text = "导出";
+            this.toolStripSplitButtonExport.ButtonClick += new System.EventHandler(this.toolStripSplitButtonExport_ButtonClick);
+            // 
+            // toolStripMenuItemExpSHP
+            // 
+            this.toolStripMenuItemExpSHP.Name = "toolStripMenuItemExpSHP";
+            this.toolStripMenuItemExpSHP.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItemExpSHP.Text = "导出SHP";
+            this.toolStripMenuItemExpSHP.Click += new System.EventHandler(this.toolStripMenuItemExpSHP_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -623,32 +649,6 @@
             this.splitContainer2.SplitterDistance = 328;
             this.splitContainer2.TabIndex = 3;
             // 
-            // MainMap
-            // 
-            this.MainMap.Bearing = 0F;
-            this.MainMap.CanDragMap = true;
-            this.MainMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainMap.EmptyTileColor = System.Drawing.Color.Navy;
-            this.MainMap.GrayScaleMode = false;
-            this.MainMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
-            this.MainMap.LevelsKeepInMemmory = 5;
-            this.MainMap.Location = new System.Drawing.Point(0, 0);
-            this.MainMap.MarkersEnabled = true;
-            this.MainMap.MaxZoom = 2;
-            this.MainMap.MinZoom = 2;
-            this.MainMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
-            this.MainMap.Name = "MainMap";
-            this.MainMap.NegativeMode = false;
-            this.MainMap.PolygonsEnabled = true;
-            this.MainMap.RetryLoadTile = 0;
-            this.MainMap.RoutesEnabled = true;
-            this.MainMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
-            this.MainMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
-            this.MainMap.ShowTileGridLines = false;
-            this.MainMap.Size = new System.Drawing.Size(629, 328);
-            this.MainMap.TabIndex = 2;
-            this.MainMap.Zoom = 0D;
-            // 
             // groupBoxPro
             // 
             this.groupBoxPro.Controls.Add(this.tableLayoutPanelPro);
@@ -671,7 +671,7 @@
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 146F));
+            this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 149F));
             this.tableLayoutPanelPro.Controls.Add(this.label01, 0, 0);
             this.tableLayoutPanelPro.Controls.Add(this.label02, 0, 1);
             this.tableLayoutPanelPro.Controls.Add(this.label1, 0, 2);
@@ -1180,7 +1180,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(231, 335);
+            this.tabPage2.Size = new System.Drawing.Size(231, 407);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "航线";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1474,7 +1474,7 @@
             this.tabPage3.Controls.Add(this.groupBox5);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(231, 335);
+            this.tabPage3.Size = new System.Drawing.Size(231, 407);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "相机参数";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1712,22 +1712,59 @@
             this.button2.Text = "取消";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // toolStripSplitButtonExport
+            // toolStripSeparator8
             // 
-            this.toolStripSplitButtonExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemExpSHP});
-            this.toolStripSplitButtonExport.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonExport.Image")));
-            this.toolStripSplitButtonExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButtonExport.Name = "toolStripSplitButtonExport";
-            this.toolStripSplitButtonExport.Size = new System.Drawing.Size(61, 22);
-            this.toolStripSplitButtonExport.Text = "导出";
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripMenuItemExpSHP
+            // toolStripMenuItemOpenWPT
             // 
-            this.toolStripMenuItemExpSHP.Name = "toolStripMenuItemExpSHP";
-            this.toolStripMenuItemExpSHP.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemExpSHP.Text = "导出SHP";
-            this.toolStripMenuItemExpSHP.Click += new System.EventHandler(this.toolStripMenuItemExpSHP_Click);
+            this.toolStripMenuItemOpenWPT.Name = "toolStripMenuItemOpenWPT";
+            this.toolStripMenuItemOpenWPT.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItemOpenWPT.Text = "打开WPT";
+            this.toolStripMenuItemOpenWPT.Click += new System.EventHandler(this.toolStripMenuItemOpenWPT_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonDoufu
+            // 
+            this.toolStripButtonDoufu.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDoufu.Image")));
+            this.toolStripButtonDoufu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDoufu.Name = "toolStripButtonDoufu";
+            this.toolStripButtonDoufu.Size = new System.Drawing.Size(73, 22);
+            this.toolStripButtonDoufu.Text = "豆腐规划";
+            // 
+            // MainMap
+            // 
+            this.MainMap.AllowDrop = true;
+            this.MainMap.Bearing = 0F;
+            this.MainMap.CanDragMap = true;
+            this.MainMap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainMap.EmptyTileColor = System.Drawing.Color.Navy;
+            this.MainMap.GrayScaleMode = false;
+            this.MainMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.MainMap.LevelsKeepInMemmory = 5;
+            this.MainMap.Location = new System.Drawing.Point(0, 0);
+            this.MainMap.MarkersEnabled = true;
+            this.MainMap.MaxZoom = 2;
+            this.MainMap.MinZoom = 2;
+            this.MainMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
+            this.MainMap.Name = "MainMap";
+            this.MainMap.NegativeMode = false;
+            this.MainMap.PolygonsEnabled = true;
+            this.MainMap.RetryLoadTile = 0;
+            this.MainMap.RoutesEnabled = true;
+            this.MainMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.MainMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.MainMap.ShowTileGridLines = false;
+            this.MainMap.Size = new System.Drawing.Size(629, 328);
+            this.MainMap.TabIndex = 2;
+            this.MainMap.Zoom = 0D;
+            this.MainMap.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainMap_DragDrop);
+            this.MainMap.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainMap_DragEnter);
             // 
             // MainForm
             // 
@@ -1944,6 +1981,10 @@
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonExport;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExpSHP;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenWPT;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripButton toolStripButtonDoufu;
     }
 }
 

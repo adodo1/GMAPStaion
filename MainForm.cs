@@ -648,6 +648,9 @@ namespace GMAPStaion
             if (drawnpolygon == null) return;
             drawnpolygon.Points.Clear();
             drawnpolygonsoverlay.Markers.Clear();
+
+            waypointlinelay.Routes.Clear();
+
             MainMap.Invalidate();
 
         }
@@ -971,7 +974,10 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemOpenWPT_Click(object sender, EventArgs e)
         {
-
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "航线文件(*.WPT)|*.WPT";
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+            AddWPT(dialog.FileName);
         }
         /// <summary>
         /// 拖拽完成
@@ -1029,6 +1035,13 @@ namespace GMAPStaion
             route.Stroke = new Pen(Color.Red, 2);
             route.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             waypointlinelay.Routes.Add(route);
+        }
+        /// <summary>
+        /// 创建豆腐航线
+        /// </summary>
+        private void toolStripButtonDoufu_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

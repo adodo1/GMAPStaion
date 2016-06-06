@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Maps\GooglStriptMaker.cs" />
     <Compile Include="Maps\IStriptMaker.cs" />
+    <Compile Include="Panda\OSDDataClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShapeLib\c.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Utilities\PointLatLngAlt.cs" />
     <Compile Include="Utilities\Rect.cs" />
     <Compile Include="Utilities\utmpos.cs" />
-    <Compile Include="WPTFileClass.cs" />
+    <Compile Include="Panda\WPTFileClass.cs" />
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </EmbeddedResource>

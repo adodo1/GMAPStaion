@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -995,6 +996,7 @@ namespace GMAPStaion
                         break;
                     case ".log":
                         // 添加航飞日志
+                        AddLOG(file);
                         break;
                     default:
                         break;
@@ -1041,6 +1043,47 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripButtonDoufu_Click(object sender, EventArgs e)
         {
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        private void AddLOG(string file)
+        {
+            string data = "";
+            using (StreamReader reader = new StreamReader(file)) {
+                data = reader.ReadToEnd();
+                reader.Close();
+            }
+            OSDControl osdControl = new OSDControl(data);
+
+            List<PointLatLng> points = new List<PointLatLng>();
+            double lastlat = 0;
+            double lastlng = 0;
+            for (int i = 0; i < osdControl.Count; i++) {
+                OSDData1 osdData1 = osdControl[i] as OSDData1;
+                OSDData2 osdData2 = osdControl[i] as OSDData2;
+                if (osdData1 != null) {
+
+                    double lat = osdData1.lat;
+                    double lng = osdData1.lng;
+                    double att = osdData1.sky_heigh;
+
+                    if (lat == 0 || lng == 0) continue;
+                    if (lat == lastlat || lng == lastlng) continue;
+
+                    lastlat = lat;
+                    lastlng = lng;
+
+                    points.Add(new PointLatLng(lat, lng));
+                }
+            }
+
+            GMapRoute route = new GMapRoute(points, "WPT LINE");
+            route.Stroke = new Pen(Color.Lime, 2);
+            route.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            waypointlinelay.Routes.Add(route);
 
         }
 

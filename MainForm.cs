@@ -971,6 +971,16 @@ namespace GMAPStaion
             }
         }
         /// <summary>
+        /// 导入SHP数据
+        /// </summary>
+        /// <param name="nameWithoutExt"></param>
+        /// <returns></returns>
+        private bool ImportSHP(string nameWithoutExt)
+        {
+
+        }
+
+        /// <summary>
         /// 打开WPT航点文件
         /// </summary>
         private void toolStripMenuItemOpenWPT_Click(object sender, EventArgs e)
@@ -1070,6 +1080,8 @@ namespace GMAPStaion
                     double lng = osdData1.lng;
                     double att = osdData1.sky_heigh;
 
+                    if (lat > 30 || lat < 18 || lng > 110)
+                        continue;
                     if (lat == 0 || lng == 0) continue;
                     if (lat == lastlat || lng == lastlng) continue;
 
@@ -1084,6 +1096,14 @@ namespace GMAPStaion
             route.Stroke = new Pen(Color.Lime, 2);
             route.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             waypointlinelay.Routes.Add(route);
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        private void AddSHP(string file)
+        {
 
         }
 

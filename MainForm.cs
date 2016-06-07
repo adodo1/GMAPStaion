@@ -328,21 +328,29 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemAirlinePlan_Click(object sender, EventArgs e)
         {
-            AirlinePlan();
+            AirlinePlan(drawnpolygon.Points);
         }
         private bool _isPlanStart = false;
         /// <summary>
         /// 航线设计
         /// </summary>
-        private void AirlinePlan(double altitude = 100, double? angle = null, double distance = 80, int spacing = 0)
+        /// <param name="inpoints">测量范围</param>
+        /// <param name="altitude">航线高度(100m)</param>
+        /// <param name="angle">航线角度(0-360)</param>
+        /// <param name="distance">航线间隔(80m)</param>
+        /// <param name="spacing">拍照间隔(0m)</param>
+        /// <returns>返回航点</returns>
+        private List<PointLatLng> AirlinePlan(List<PointLatLng> inpoints, double altitude = 100, double? angle = null, double distance = 80, int spacing = 0)
         {
-            if (_isPlanStart) return;
+            if (_isPlanStart) return new List<PointLatLng>();
             _isPlanStart = true;
 
             List<PointLatLngAlt> list = new List<PointLatLngAlt>();
-            drawnpolygon.Points.ForEach(x => { list.Add(x); });         // 
+            inpoints.ForEach(x => { list.Add(x); });         // 
             if (angle == null) angle = GetAngleOfLongestSide(list);     // 航线角度
             MainMap.HoldInvalidation = true;                            // 地图暂停刷新
+
+            List<PointLatLng> result = new List<PointLatLng>();
 
             routesOverlay.Routes.Clear();           // 清除路径
             routesOverlay.Polygons.Clear();         // 清除多边形
@@ -383,7 +391,7 @@ namespace GMAPStaion
                 }
 
 
-                if (points.Count == 0) return;
+                if (points.Count == 0) return new List<PointLatLng>();
 
                 //
                 int strips = 0;     // 航线条数
@@ -456,6 +464,9 @@ namespace GMAPStaion
                         segment.Add(prevpoint);
                         segment.Add(item);
                         prevpoint = item;
+
+                        result.Add(new PointLatLng(item.Lat, item.Lng));    // 把航点保存下来
+
                         a++;    // 航点加一
                     }
                     GMapRoute seg = new GMapRoute(segment, "segment" + a.ToString());
@@ -476,7 +487,7 @@ namespace GMAPStaion
                 labelSpacing.Text = spacing.ToString("0.#米");          // 照片间隔
 
 
-
+                return result;
             }
             catch (Exception ex) {
                 throw;
@@ -547,7 +558,11 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemOpenSHP_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "SHP文件(*.SHP)|*.SHP";
+            if (dialog.ShowDialog() != DialogResult.OK) return;
 
+            ImportSHP(dialog.FileName);
         }
         /// <summary>
         /// 矩形框选
@@ -757,7 +772,7 @@ namespace GMAPStaion
         /// </summary>
         private void numericUpDownAngle_ValueChanged(object sender, EventArgs e)
         {
-            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            AirlinePlan(drawnpolygon.Points, (double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
             MainMap.Invalidate();
         }
         /// <summary>
@@ -765,7 +780,7 @@ namespace GMAPStaion
         /// </summary>
         private void numericUpDownDistance_ValueChanged(object sender, EventArgs e)
         {
-            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            AirlinePlan(drawnpolygon.Points, (double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
             MainMap.Invalidate();
         }
         /// <summary>
@@ -773,7 +788,7 @@ namespace GMAPStaion
         /// </summary>
         private void checkBoxCross_CheckedChanged(object sender, EventArgs e)
         {
-            AirlinePlan((double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            AirlinePlan(drawnpolygon.Points, (double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
             MainMap.Invalidate();
         }
         /// <summary>
@@ -977,7 +992,46 @@ namespace GMAPStaion
         /// <returns></returns>
         private bool ImportSHP(string nameWithoutExt)
         {
+            // Open the passed shapefile.
+            SHPHandle hSHP = SHPHandle.Open(nameWithoutExt, "rb");
+            int nEntities;
+            SHPT nShapeType;
+            double[] adfMinBound = new double[4];
+            double[] adfMaxBound = new double[4];
+            hSHP.GetInfo(out nEntities, out nShapeType, adfMinBound, adfMaxBound);
 
+            for (int i = 0; i < nEntities; i++) {
+                //if (i != 0) continue;
+                List<PointLatLng> points = new List<PointLatLng>();
+                SHPObject psShape = hSHP.ReadObject(i);
+                for (int n = 0; n < psShape.nVertices; n++) {
+                    double lat = psShape.padfY[n];
+                    double lng = psShape.padfX[n];
+                    points.Add(new PointLatLng(lat, lng));
+
+                    
+                }
+
+                // 航线规划
+                List<PointLatLng> airline = AirlinePlan(points, 300, 0, 80, 0);
+                string name = string.Format("PLAN_{0:00}.WPT", i);
+                using (StreamWriter writer = new StreamWriter(name)) {
+                    writer.WriteLine("[Way Point]");
+                    writer.WriteLine("Total Num={0}", airline.Count);
+                    int n = 0;
+                    foreach (PointLatLng point in airline) {
+                        writer.WriteLine("{0:00}={1:00},{2:0.000000},{3:0.000000},{4}", ++n, n, point.Lat, point.Lng, 300);
+                    }
+                    writer.Flush();
+                    writer.Close();
+                }
+
+                GMapRoute route = new GMapRoute(points, "WPT LINE");
+                route.Stroke = new Pen(Color.Lime, 2);
+                route.Stroke.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+                drawnpolygonsoverlay.Routes.Add(route);
+            }
+            return true;
         }
 
         /// <summary>

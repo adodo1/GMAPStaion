@@ -180,6 +180,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.toolStripMenuItemCreateIndex = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -356,6 +357,7 @@
             this.工具ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemDownload,
             this.toolStripMenuItemUnion,
+            this.toolStripMenuItemCreateIndex,
             this.toolStripSeparator2,
             this.toolStripMenuItemCache});
             this.工具ToolStripMenuItem.Name = "工具ToolStripMenuItem";
@@ -365,26 +367,26 @@
             // toolStripMenuItemDownload
             // 
             this.toolStripMenuItemDownload.Name = "toolStripMenuItemDownload";
-            this.toolStripMenuItemDownload.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemDownload.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemDownload.Text = "地图下载";
             this.toolStripMenuItemDownload.Click += new System.EventHandler(this.toolStripMenuItemDownload_Click);
             // 
             // toolStripMenuItemUnion
             // 
             this.toolStripMenuItemUnion.Name = "toolStripMenuItemUnion";
-            this.toolStripMenuItemUnion.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemUnion.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemUnion.Text = "影像拼接";
             this.toolStripMenuItemUnion.Click += new System.EventHandler(this.toolStripMenuItemUnion_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemCache
             // 
             this.toolStripMenuItemCache.Name = "toolStripMenuItemCache";
-            this.toolStripMenuItemCache.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemCache.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemCache.Text = "缓存地图";
             this.toolStripMenuItemCache.Click += new System.EventHandler(this.toolStripMenuItemCache_Click);
             // 
@@ -401,21 +403,21 @@
             // toolStripMenuItemAirlinePlan
             // 
             this.toolStripMenuItemAirlinePlan.Name = "toolStripMenuItemAirlinePlan";
-            this.toolStripMenuItemAirlinePlan.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemAirlinePlan.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemAirlinePlan.Text = "航线设计";
             this.toolStripMenuItemAirlinePlan.Click += new System.EventHandler(this.toolStripMenuItemAirlinePlan_Click);
             // 
             // toolStripMenuItemAirlineSum
             // 
             this.toolStripMenuItemAirlineSum.Name = "toolStripMenuItemAirlineSum";
-            this.toolStripMenuItemAirlineSum.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemAirlineSum.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemAirlineSum.Text = "航程计算";
             this.toolStripMenuItemAirlineSum.Click += new System.EventHandler(this.toolStripMenuItemAirlineSum_Click);
             // 
             // toolStripMenuItemReplay
             // 
             this.toolStripMenuItemReplay.Name = "toolStripMenuItemReplay";
-            this.toolStripMenuItemReplay.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemReplay.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemReplay.Text = "日志回放";
             this.toolStripMenuItemReplay.Click += new System.EventHandler(this.toolStripMenuItemReplay_Click);
             // 
@@ -436,45 +438,45 @@
             // toolStripMenuItemLocation
             // 
             this.toolStripMenuItemLocation.Name = "toolStripMenuItemLocation";
-            this.toolStripMenuItemLocation.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemLocation.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemLocation.Text = "定位坐标";
             this.toolStripMenuItemLocation.Click += new System.EventHandler(this.toolStripMenuItemLocation_Click);
             // 
             // toolStripMenuItemCoordinateConvert
             // 
             this.toolStripMenuItemCoordinateConvert.Name = "toolStripMenuItemCoordinateConvert";
-            this.toolStripMenuItemCoordinateConvert.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemCoordinateConvert.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemCoordinateConvert.Text = "坐标转换";
             this.toolStripMenuItemCoordinateConvert.Click += new System.EventHandler(this.toolStripMenuItemCoordinateConvert_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemLength
             // 
             this.toolStripMenuItemLength.Name = "toolStripMenuItemLength";
-            this.toolStripMenuItemLength.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemLength.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemLength.Text = "距离测量";
             this.toolStripMenuItemLength.Click += new System.EventHandler(this.toolStripMenuItemLength_Click);
             // 
             // toolStripMenuItemArea
             // 
             this.toolStripMenuItemArea.Name = "toolStripMenuItemArea";
-            this.toolStripMenuItemArea.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemArea.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemArea.Text = "面积测量";
             this.toolStripMenuItemArea.Click += new System.EventHandler(this.toolStripMenuItemArea_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(115, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemBookmark
             // 
             this.toolStripMenuItemBookmark.Name = "toolStripMenuItemBookmark";
-            this.toolStripMenuItemBookmark.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemBookmark.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemBookmark.Text = "地图书签";
             this.toolStripMenuItemBookmark.Click += new System.EventHandler(this.toolStripMenuItemBookmark_Click);
             // 
@@ -726,7 +728,7 @@
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151F));
+            this.tableLayoutPanelPro.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 152F));
             this.tableLayoutPanelPro.Controls.Add(this.label01, 0, 0);
             this.tableLayoutPanelPro.Controls.Add(this.label02, 0, 1);
             this.tableLayoutPanelPro.Controls.Add(this.label1, 0, 2);
@@ -1235,7 +1237,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(231, 406);
+            this.tabPage2.Size = new System.Drawing.Size(231, 407);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "航线";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1529,7 +1531,7 @@
             this.tabPage3.Controls.Add(this.groupBox5);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(231, 406);
+            this.tabPage3.Size = new System.Drawing.Size(231, 407);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "相机参数";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1767,6 +1769,13 @@
             this.button2.Text = "取消";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // toolStripMenuItemCreateIndex
+            // 
+            this.toolStripMenuItemCreateIndex.Name = "toolStripMenuItemCreateIndex";
+            this.toolStripMenuItemCreateIndex.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemCreateIndex.Text = "创建网格";
+            this.toolStripMenuItemCreateIndex.Click += new System.EventHandler(this.toolStripMenuItemCreateIndex_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1987,6 +1996,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenWPT;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripButton toolStripButtonDoufu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCreateIndex;
     }
 }
 

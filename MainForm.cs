@@ -1160,6 +1160,78 @@ namespace GMAPStaion
         {
 
         }
+        /// <summary>
+        /// 创建索引网格
+        /// </summary>
+        private void toolStripMenuItemCreateIndex_Click(object sender, EventArgs e)
+        {
+            if (MainMap.SelectedArea.IsEmpty == true) return;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "SHP文件(*.SHP)|*.SHP";
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            double width = 500;
+            double height = 500;
+            CreateIndex(dialog.FileName, width, height, MainMap.SelectedArea.Left, MainMap.SelectedArea.Top, MainMap.SelectedArea.Right, MainMap.SelectedArea.Bottom);
+        }
+        /// <summary>
+        /// 创建索引网格
+        /// </summary>
+        /// <param name="file">输出的索引网格</param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="left_lng">左_经度 比如109.4</param>
+        /// <param name="top_lat">上_纬度 比如24.3</param>
+        /// <param name="right_lng">右_经度 比如109.5</param>
+        /// <param name="bottom_lat">下_纬度 比如24.2</param>
+        private void CreateIndex(string file, double width, double height, double left_lng, double top_lat, double right_lng, double bottom_lat)
+        {
+            // 
+
+            GMapProvider provider = MainMap.MapProvider;
+            int zoom = 20;
+            GPoint left_top = provider.Projection.FromPixelToTileXY(provider.Projection.FromLatLngToPixel(top_lat, left_lng, zoom));
+            GPoint right_bottom = provider.Projection.FromPixelToTileXY(provider.Projection.FromLatLngToPixel(bottom_lat, right_lng, zoom));
+
+            //
+            // tfw 格式
+            // A 【X方向上的象素分辨素】距离/像素
+            // D 【X方向的旋转系数】
+            // B 【Y方向的旋转系数】
+            // E 【Y方向上的象素分辨率】距离/像素
+            // C 【栅格地图左上角象素中心X坐标】
+            // F 【栅格地图左上角象素中心Y坐标】
+
+            // 坐标系采用WEB墨卡托
+            GPoint lt = provider.Projection.FromTileXYToPixel(left_top);                                            // 左上角像素坐标
+            GPoint rb = provider.Projection.FromTileXYToPixel(new GPoint(right_bottom.X + 1, right_bottom.Y + 1));  // 右下角像素坐标
+            PointLatLng lt_gps = provider.Projection.FromPixelToLatLng(lt, zoom);                                   // 左上角GPS坐标
+            PointLatLng rb_gps = provider.Projection.FromPixelToLatLng(rb, zoom);                                   // 右下角GPS坐标
+            // 
+            double pixWidth = rb.X - lt.X;      // 总像素宽度
+            double pixHeigh = rb.Y - lt.Y;      // 总像素高度
+            GSize fullsize = provider.Projection.GetTileMatrixSizePixel(zoom);  // 当前等级瓦片总像素
+            // 墨卡托取值范围 [-20037508.3427892,20037508.3427892] 总数:40075016.6855784
+            // 求图片左上角和右下角坐标
+            double pixLT_X = ((double)lt.X / fullsize.Width) * 40075016.6855784 - 20037508.3427892;
+            double pixLT_Y = 20037508.3427892 - ((double)lt.Y / fullsize.Height) * 40075016.6855784;
+            double pixRB_X = ((double)rb.X / fullsize.Width) * 40075016.6855784 - 20037508.3427892;
+            double pixRB_Y = 20037508.3427892 - ((double)rb.Y / fullsize.Height) * 40075016.6855784;
+            //
+            double disX = pixRB_X - pixLT_X;        // 实际X距离(m)
+            double disY = pixRB_Y - pixLT_Y;        // 实际Y距离(m)
+
+
+            double pixX = disX / pixWidth;      // X轴像素分辨率
+            double pixY = disY / pixHeigh;      // Y轴像素分辨率
+            double roX = 0;                     // X方向旋转
+            double roY = 0;                     // Y方向旋转
+            double offsetX = pixLT_X;
+            double offsetY = pixLT_Y;
+
+
+
+        }
 
     }
 

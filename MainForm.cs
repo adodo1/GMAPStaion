@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace GMAPStaion
         private GMapOverlay waypointlinelay = null;         // WPT航线图层
 
         private bool _polygongridmode = false;
+
+        List<PointLatLngAlt> _wps = null;                      // 所有航点
 
         public MainForm()
         {
@@ -328,7 +331,7 @@ namespace GMAPStaion
         /// </summary>
         private void toolStripMenuItemAirlinePlan_Click(object sender, EventArgs e)
         {
-            AirlinePlan(drawnpolygon.Points);
+            //AirlinePlan(drawnpolygon.Points);
         }
         private bool _isPlanStart = false;
         /// <summary>
@@ -342,6 +345,8 @@ namespace GMAPStaion
         /// <returns>返回航点</returns>
         private List<PointLatLng> AirlinePlan(List<PointLatLng> inpoints, double altitude = 100, double? angle = null, double distance = 80, int spacing = 0)
         {
+            spacing = 1000;
+
             if (_isPlanStart) return new List<PointLatLng>();
             _isPlanStart = true;
 
@@ -411,7 +416,7 @@ namespace GMAPStaion
                         images++;       // 照片张数加一
                         // 绘制拍照点
                         if (checkBoxInternals.Checked) {
-                            routesOverlay.Markers.Add(new GMarkerGoogle(item, GMarkerGoogleType.green) { ToolTipText = a.ToString(), ToolTipMode = MarkerTooltipMode.OnMouseOver });
+                            routesOverlay.Markers.Add(new GMarkerGoogle(item, GMarkerGoogleType.blue_small) { ToolTipText = a.ToString(), ToolTipMode = MarkerTooltipMode.OnMouseOver });
                             segment.Add(prevpoint);
                             segment.Add(item);
                             prevpoint = item;
@@ -486,6 +491,10 @@ namespace GMAPStaion
                 labelLineDistance.Text = distance.ToString("0.#米");    // 航线间距
                 labelSpacing.Text = spacing.ToString("0.#米");          // 照片间隔
 
+                _wps = new List<PointLatLngAlt>();
+                foreach (PointLatLng point in result) {
+                    _wps.Add(new PointLatLngAlt(point.Lat, point.Lng));
+                }
 
                 return result;
             }
@@ -776,7 +785,7 @@ namespace GMAPStaion
             MainMap.Invalidate();
         }
         /// <summary>
-        /// 
+        /// 航线间隔
         /// </summary>
         private void numericUpDownDistance_ValueChanged(object sender, EventArgs e)
         {
@@ -788,8 +797,8 @@ namespace GMAPStaion
         /// </summary>
         private void checkBoxCross_CheckedChanged(object sender, EventArgs e)
         {
-            AirlinePlan(drawnpolygon.Points, (double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
-            MainMap.Invalidate();
+            //AirlinePlan(drawnpolygon.Points, (double)numericUpDownAltitude.Value, (double)numericUpDownAngle.Value, (double)numericUpDownDistance.Value);
+            //MainMap.Invalidate();
         }
         /// <summary>
         /// 导出
@@ -1232,6 +1241,120 @@ namespace GMAPStaion
 
 
         }
+        /// <summary>
+        /// 导出任务
+        /// </summary>
+        private void buttonExportMisson_Click(object sender, EventArgs e)
+        {
+            //SQLiteHelper.SetConnectionString = string.Format("Data Source=\"{0}\"", "D:\\TEMP\\dji.db");
+            //string sql = string.Format("select * from dji_pilot_groundStation_db_DJIWPCollectionItem");
+            //DataSet dataset = SQLiteHelper.ExecuteDataset(CommandType.Text, sql);
+
+            // 1. 航点坐标转墨卡托
+            // 2. 任务分段
+            // 3. 墨卡托转经纬度
+            // 4. 写数据库
+
+            List<PointLatLngAlt> result = new List<PointLatLngAlt>();       // 中间用null分割
+
+            if (_wps == null || _wps.Count == 0) return;
+            double maxsegment = (double)numericUpDownSegment.Value;
+            PointLatLngAlt frompoint = _wps[0];
+            double left = maxsegment;                   // 剩余
+            for (int i = 1; i < _wps.Count; i++) {
+                PointLatLngAlt topoint = _wps[i];
+                if (left - frompoint.GetDistance(topoint) >= 0) {
+                    // 还有剩余
+                    left = left - frompoint.GetDistance(topoint);
+                    result.Add(topoint);
+                    frompoint = topoint;
+                }
+                else {
+                    // 没有剩余 不够分了
+                    double[] fromxy = frompoint.ToUTM(49);
+                    double x1 = fromxy[0];
+                    double y1 = fromxy[1];
+                    double[] toxy = topoint.ToUTM(49);
+                    double x2 = toxy[0];
+                    double y2 = toxy[1];
+                    double x = 0;
+                    double y = 0;
+
+                    GetCPoint(x1, y1, x2, y2, left, out x, out y);
+                    utmpos centerp = new utmpos(x, y, 49);
+                    result.Add(centerp.ToLLA());
+                    result.Add(null);       // 分隔
+
+                    frompoint = centerp.ToLLA();
+
+                }
+
+            }
+
+
+            //int utmzone = polygon[0].GetUTMZone();
+            
+
+            //double[] xyz = _wps[0].ToUTM(49);
+
+            //utmpos a = new utmpos(xyz[0], xyz[1], 49);
+            //a.ToLLA();
+            //utmpos = new utmpos(new PointLatLngAlt(lat, lng).GetUTMZone)
+
+        }
+        /// <summary>
+        /// 获取中间点坐标
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <param name="distance"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private bool GetCPoint(double x1, double y1, double x2, double y2, double distance, out double x, out double y)
+        {
+            PointLatLngAlt a = new PointLatLngAlt();
+            x = y = 0;
+            return true;
+        }
+
+
+        #region 参考
+        /// <summary>
+        /// 读取参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private static string ReadParameter(string name)
+        {
+            //string sql = string.Format("select VALUE from {0} where NAME=@NAME", PlanGIS.Framework.MainFramework.PARAMETER_TABLE_NAME);
+            //SQLiteParameter[] args = new SQLiteParameter[1];
+            //args[0] = new SQLiteParameter("@NAME", name);
+            //object value = SQLiteHelper.ExecuteScalar(CommandType.Text, sql, args);
+            //if (value != null && Convert.IsDBNull(value) == false) return Convert.ToString(value);
+            //else return "";
+            return "";
+        }
+        /// <summary>
+        /// 写入参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static bool WriteParameter(string name, string value)
+        {
+            //string sql = string.Format("REPLACE INTO {0} (NAME, VALUE) VALUES(@NAME, @VALUE)", PlanGIS.Framework.MainFramework.PARAMETER_TABLE_NAME);
+            //SQLiteParameter[] args = new SQLiteParameter[2];
+            //args[0] = new SQLiteParameter("@NAME", name);
+            //args[1] = new SQLiteParameter("@VALUE", value);
+            //int result = SQLiteHelper.ExecuteNonQuery(CommandType.Text, sql, args);
+            //return result > 0;
+            return true;
+        }
+
+        #endregion
 
     }
 

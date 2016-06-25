@@ -103,7 +103,7 @@ namespace GMAPStaion
 
             List<PointLatLngAlt> ans = new List<PointLatLngAlt>();
 
-            // 计算当前精度在墨卡托坐标的哪个带里
+            // 计算当前经度在墨卡托坐标的哪个带里
             // utm zone distance calcs will be done in
             int utmzone = polygon[0].GetUTMZone();
             // 将经纬度坐标点转成墨卡托坐标

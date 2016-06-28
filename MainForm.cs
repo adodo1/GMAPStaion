@@ -32,7 +32,7 @@ namespace GMAPStaion
 
         private bool _polygongridmode = false;
 
-        List<PointLatLngAlt> _wps = null;                      // 所有航点
+        List<utmpos> _wps = null;                           // 所有航点
 
         public MainForm()
         {
@@ -487,13 +487,13 @@ namespace GMAPStaion
                 // 绘制完了 写信息
                 numericUpDownAngle.Value = (decimal)angle;              // 航线角度
                 labelArea.Text = (CalcPolygonArea(list) / 1000000.0).ToString("0.##平方千米");     // 测区面积
-                labelDistance.Text = routetotal.ToString("0.#千米");    // 航线长度
+                labelDistance.Text = routetotal.ToString("0.##千米");   // 航线长度
                 labelLineDistance.Text = distance.ToString("0.#米");    // 航线间距
                 labelSpacing.Text = spacing.ToString("0.#米");          // 照片间隔
 
-                _wps = new List<PointLatLngAlt>();
+                _wps = new List<utmpos>();
                 foreach (PointLatLng point in result) {
-                    _wps.Add(new PointLatLngAlt(point.Lat, point.Lng));
+                    _wps.Add(new utmpos(point));
                 }
 
                 return result;
@@ -1246,80 +1246,43 @@ namespace GMAPStaion
         /// </summary>
         private void buttonExportMisson_Click(object sender, EventArgs e)
         {
+            //if (_wps == null || _wps.Count == 0) return;
+            //DataTable table = new DataTable();
+            //table.Columns.Add("ID", typeof(int));
+            //table.Columns.Add("NAME", typeof(string));
+            //table.Columns.Add("REMARK", typeof(string));
+            //table.Columns.Add("SHAPE", typeof(SHPRecord));
+            //// 构造图形
+            //SHPRecord shprecord = new SHPRecord() { ShapeType = SHPT.ARC };
+            //shprecord.Parts.Add(0);                                     // 第一个分段 从0号点开始
+            //foreach (PointLatLngAlt point in _wps) {
+            //    shprecord.Points.Add(new double[] { point.Lng, point.Lat, 0, 0 });          // 节点0
+            //}
+            
+
+            //// 
+            //table.Rows.Add(1, "A1", "中文注记", shprecord);
+            ////
+            //bool success = ExportSHP("./data/line.shp", table, SHPT.ARC);
+            //MessageBox.Show("OK");
+
+            //return;
+
             //SQLiteHelper.SetConnectionString = string.Format("Data Source=\"{0}\"", "D:\\TEMP\\dji.db");
             //string sql = string.Format("select * from dji_pilot_groundStation_db_DJIWPCollectionItem");
             //DataSet dataset = SQLiteHelper.ExecuteDataset(CommandType.Text, sql);
 
-            // 1. 航点坐标转墨卡托
-            // 2. 任务分段
-            // 3. 墨卡托转经纬度
-            // 4. 写数据库
-
-            List<PointLatLngAlt> result = new List<PointLatLngAlt>();       // 中间用null分割
 
             if (_wps == null || _wps.Count == 0) return;
-            double maxsegment = (double)numericUpDownSegment.Value;
-            PointLatLngAlt frompoint = _wps[0];
-            double left = maxsegment;                   // 剩余
-            for (int i = 1; i < _wps.Count; i++) {
-                PointLatLngAlt topoint = _wps[i];
-                if (left - frompoint.GetDistance(topoint) >= 0) {
-                    // 还有剩余
-                    left = left - frompoint.GetDistance(topoint);
-                    result.Add(topoint);
-                    frompoint = topoint;
-                }
-                else {
-                    // 没有剩余 不够分了
-                    double[] fromxy = frompoint.ToUTM(49);
-                    double x1 = fromxy[0];
-                    double y1 = fromxy[1];
-                    double[] toxy = topoint.ToUTM(49);
-                    double x2 = toxy[0];
-                    double y2 = toxy[1];
-                    double x = 0;
-                    double y = 0;
+            double maxlen = (double)numericUpDownSegment.Value;
 
-                    GetCPoint(x1, y1, x2, y2, left, out x, out y);
-                    utmpos centerp = new utmpos(x, y, 49);
-                    result.Add(centerp.ToLLA());
-                    result.Add(null);       // 分隔
-
-                    frompoint = centerp.ToLLA();
-
-                }
-
-            }
-
-
-            //int utmzone = polygon[0].GetUTMZone();
-            
-
-            //double[] xyz = _wps[0].ToUTM(49);
-
-            //utmpos a = new utmpos(xyz[0], xyz[1], 49);
-            //a.ToLLA();
-            //utmpos = new utmpos(new PointLatLngAlt(lat, lng).GetUTMZone)
+            MissionCut mc = new MissionCut();
+            List<utmpos> result = mc.LineCut(_wps, maxlen);
 
         }
-        /// <summary>
-        /// 获取中间点坐标
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
-        /// <param name="x2"></param>
-        /// <param name="y2"></param>
-        /// <param name="distance"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private bool GetCPoint(double x1, double y1, double x2, double y2, double distance, out double x, out double y)
-        {
-            PointLatLngAlt a = new PointLatLngAlt();
-            x = y = 0;
-            return true;
-        }
 
+
+        
 
         #region 参考
         /// <summary>

@@ -1279,6 +1279,11 @@ namespace GMAPStaion
             MissionCut mc = new MissionCut();
             List<utmpos> result = mc.LineCut(_wps, maxlen);
 
+            foreach (var r in result) {
+                PointLatLng p = r.ToLLA();
+                Console.WriteLine("{0}, {1}", p.Lat, p.Lng);
+            }
+
         }
 
 

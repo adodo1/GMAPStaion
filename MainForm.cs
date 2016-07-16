@@ -1279,10 +1279,22 @@ namespace GMAPStaion
             MissionCut mc = new MissionCut();
             List<utmpos> result = mc.LineCut(_wps, maxlen);
 
-            foreach (var r in result) {
-                PointLatLng p = r.ToLLA();
-                Console.WriteLine("{0}, {1}", p.Lat, p.Lng);
-            }
+            double toward = 0;
+            if (checkBoxNextWP.Checked) toward = -1;
+            MissionToDB mtd = new MissionToDB(textBoxMissionName.Text, result, Convert.ToDouble(numericUpDownAltitude.Value), toward);
+
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "数据库文件(*.db)|*.db|所有文件(*.*)|*.*";
+            if (dialog.ShowDialog(this) != System.Windows.Forms.DialogResult.OK) return;
+            mtd.SaveTo(dialog.FileName);
+            MessageBox.Show("完成", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        /// <summary>
+        /// 保存航点到
+        /// </summary>
+        /// <param name="infos"></param>
+        private void SaveWPS(Dictionary<string, object> infos)
+        {
 
         }
 

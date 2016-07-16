@@ -92,6 +92,7 @@
     <Compile Include="Maps\GooglStriptMaker.cs" />
     <Compile Include="Maps\IStriptMaker.cs" />
     <Compile Include="Mission\MissionCut.cs" />
+    <Compile Include="Mission\MissionToDB.cs" />
     <Compile Include="Panda\OSDDataClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
